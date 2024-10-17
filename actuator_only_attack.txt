@@ -1,0 +1,36 @@
+A → [in; ctrl] <attack> [{plant} & Q]S
+
+Where:
+
+// Initial assumptions
+A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2  // Initial water levels within normal range
+    ∧ V1 = 0 ∧ V2 = 0 ∧ P = 0               // Valves and pump initially off
+    ∧ ε ≥ 0 ∧ FL > 0                        // Positive scan cycle time and minimum flow rate
+    ∧ LL < L1 ∧ LL < L2                     // Lower limits below normal operating range
+    ∧ L1 < H1 ∧ L2 < H2 ∧ H1 < HH ∧ H2 < HH  // Hierarchical arrangement of thresholds
+
+// Nondeterministic input assignment (representing uncertain environment)
+in ≡ f1 := *; f2 := *  
+
+// Normal control logic
+ctrl ≡ { ?(f1 > (HH - x1)/ε); V1 := 0  // Close V1 if potential overflow detected
+       ∪ ?¬(f1 > (HH - x1)/ε); {?(x1 ≤ L1); V1 := 1 ∪ ?¬(x1 ≤ L1)}  // Open V1 if level too low
+       };
+       {?(x2 ≤ L2); P := 1; V2 := 1 ∪ ?¬(x2 ≤ L2)};  // Control second tank
+       {?(V1·f1 - V2·P·f2 < (LL - x1)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε); 
+         P := 0; V2 := 0  // Stop pump and close V2 if underflow, low flow, or overflow detected
+       ∪ ?¬(V1·f1 - V2·P·f2 < (LL - x1)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε)}
+
+// Actuator attack formulation
+attack ≡ P~ := *  // Arbitrary manipulation of pump actuator
+
+// System dynamics (physical behavior of the water tanks with attacked pump)
+plant ≡ x'1 = V1·f1 - V2·P~·f2, x'2 = V2·P~·f2, t' = 1  
+
+// Invariant conditions (must hold throughout the continuous evolution)
+Q ≡ t ≤ ε            // Time bound for each cycle
+    ∧ x1 ≥ 0 ∧ x2 ≥ 0 // Water levels are non-negative
+    ∧ f1 ≥ 0 ∧ f2 ≥ 0 // Flow rates are non-negative
+
+// Safety condition (must be maintained despite attacks)
+S ≡ LL ≤ x1 ∧ x1 ≤ HH ∧ LL ≤ x2 ∧ x2 ≤ HH  // Water levels stay within safe bounds
