@@ -1,4 +1,4 @@
-A → [in; x1^ := *] (<ctrl> [{plant} & Q]S)
+A → [in; x1sensor := *] (<ctrl> [{plant} & Q]S)
 
 Where:
 
@@ -13,17 +13,17 @@ A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2  // Initial water leve
 in ≡ f1 := *; f2 := *  
 
 // Attack formulation: Arbitrary manipulation of sensor x1
-// x1^ represents the attacked sensor value, which can be any real number
-x1^ := *  
+// x1sensor represents the attacked sensor value, which can be any real number
+x1sensor := *  
 
-// Control logic using potentially attacked sensor value x1^
-ctrl ≡ { ?(f1 > (HH - x1^)/ε); V1 := 0  // Close V1 if potential overflow detected
-       ∪ ?¬(f1 > (HH - x1^)/ε); {?(x1^ ≤ L1); V1 := 1 ∪ ?¬(x1^ ≤ L1)}  // Open V1 if level too low
+// Control logic using potentially attacked sensor value x1sensor
+ctrl ≡ { ?(f1 > (HH - x1sensor)/ε); V1 := 0  // Close V1 if potential overflow detected
+       ∪ ?¬(f1 > (HH - x1sensor)/ε); {?(x1sensor ≤ L1); V1 := 1 ∪ ?¬(x1sensor ≤ L1)}  // Open V1 if level too low
        };
        {?(x2 ≤ L2); P := 1; V2 := 1 ∪ ?¬(x2 ≤ L2)};  // Control second tank
-       {?(V1·f1 - V2·P·f2 < (LL - x1^)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε); 
+       {?(V1·f1 - V2·P·f2 < (LL - x1sensor)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε); 
          P := 0; V2 := 0  // Stop pump and close V2 if underflow, low flow, or overflow detected
-       ∪ ?¬(V1·f1 - V2·P·f2 < (LL - x1^)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε)}
+       ∪ ?¬(V1·f1 - V2·P·f2 < (LL - x1sensor)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε)}
 
 // System dynamics (physical behavior of the water tanks)
 plant ≡ x'1 = V1·f1 - V2·P·f2, x'2 = V2·P·f2, t' = 1  
