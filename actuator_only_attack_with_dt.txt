@@ -1,113 +1,135 @@
-// Initial assumptions
-A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2  // Initial water levels within normal range
-∧ V1 = 0 ∧ V2 = 0 ∧ P = 0                    // Valves and pump initially off
-∧ ε ≥ 0 ∧ FL > 0                             // Positive scan cycle time and minimum flow rate
-∧ LL < L1 ∧ LL < L2                          // Lower limits below normal operating range
-∧ L1 < H1 ∧ L2 < H2 ∧ H1 < HH ∧ H2 < HH      // Hierarchical arrangement of thresholds
-∧ t_attack = 0 ∧ t_detect = ∞                // Initial timing variables
-∧ t_recovery > 0                             // Positive recovery window
-∧ DT_active = 0                              // DT initially not intervening
+// Initial assumptions - Define valid starting state for the system
+A ≡ 
+  // Water levels must start within normal operating range for both tanks
+  L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2  
+  // All control components (valves, pump) start in OFF position
+  ∧ V1 = 0 ∧ V2 = 0 ∧ P = 0                    
+  // System timing cycle and flow rate must be positive values
+  ∧ ε ≥ 0 ∧ FL > 0                             
+  // Emergency lower limit must be below normal operating range
+  ∧ LL < L1 ∧ LL < L2                          
+  // Establish proper hierarchy of water level thresholds: LL < L < H < HH
+  ∧ L1 < H1 ∧ L2 < H2 ∧ H1 < HH ∧ H2 < HH      
+  // Initialize attack detection timing variables
+  ∧ t_attack = 0 ∧ t_detect = ∞                
+  // Must have positive time window for recovery actions
+  ∧ t_recovery > 0                             
+  // Digital Twin starts in inactive state
+  ∧ DT_active = 0                              
 
-// Main formula
-A → [in; 
+// Main safety formula: If A holds, then after program execution, S holds
+A → [
+     // First allow nondeterministic input flows
+     in; 
      {
-       // Normal operation or attack scenario
-       {ctrl; safe_ctrl} 
+       // System can either operate normally OR be under attack
+       {ctrl; safe_ctrl}  // Normal operation path
        ∪ 
+       // Attack path: record attack time, allow pump manipulation, set attack flags
        {t_attack := t; ctrl_attack; attacked_ctrl}
      };
+     // Reset time counter for next cycle
      t := 0;
      {
-       // System dynamics with DT monitoring
-       {plant; 
-        DT_monitor;
-        {
-          // During potential attack window
-          ?(t - t_attack ≤ t2); 
-          {
-            // DT detection
-            ?(unsafe_pred ∧ DT_active = 0); 
-            t_detect := t;
-            DT_active := 1
-          }
-          ∪ 
-          // DT intervention
-          {
-            ?(DT_active = 1 ∧ t - t_detect ≤ t_recovery); 
-            DT_intervention
-          }
-        }
-       } & Q
+       // Continuous evolution of system with DT oversight
+       {
+         // Physical plant evolution (water flows)
+         plant; 
+         // DT predicts future states
+         DT_monitor;
+         {
+           // Check if we're still within the attack response window
+           ?(t - t_attack ≤ t2); 
+           {
+             // DT Detection: If unsafe future predicted and DT not yet active
+             ?(unsafe_pred ∧ DT_active = 0); 
+             t_detect := t;  // Record detection time
+             DT_active := 1  // Activate DT intervention
+           }
+           ∪ 
+           // DT Intervention: If DT active and within recovery window
+           {
+             ?(DT_active = 1 ∧ t - t_detect ≤ t_recovery); 
+             DT_intervention  // Apply recovery actions
+           }
+         }
+       } & Q  // All while maintaining invariant conditions
      }
-    ]S
+    ]S  // Must result in safe state
 
-// Input assignments
-in ≡ f1 := *; f2 := *
+// Nondeterministic input flows
+in ≡ f1 := *; f2 := *  // Allow any positive flow rates
 
-// Normal control logic
+// Normal control logic - Regular operation of the system
 safe_ctrl ≡ 
 { 
+  // Close inlet if potential overflow
   ?(f1 > (HH - x1)/ε); V1 := 0
   ∪ 
+  // Otherwise, open inlet if level too low
   ?¬(f1 > (HH - x1)/ε); {?(x1 ≤ L1); V1 := 1 ∪ ?¬(x1 ≤ L1)}
 };
+// Control tank 2 pump and valve based on level
 {?(x2 ≤ L2); P := 1; V2 := 1 ∪ ?¬(x2 ≤ L2)};
+// Safety checks for flow conditions
 {?(V1·f1 - V2·P·f2 < (LL - x1)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε);
-  P := 0; V2 := 0
+  P := 0; V2 := 0  // Stop transfer if any safety condition met
   ∪ 
   ?¬(V1·f1 - V2·P·f2 < (LL - x1)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε)}
 
-// Attack scenario
+// Attack scenario - Attacker can set pump to any value
 ctrl_attack ≡ P := *  // Arbitrary pump manipulation
 
-// System under attack behavior
+// System behavior when under attack
 attacked_ctrl ≡ 
 {
-  // Record attack impact on system
-  P_attack := P;  // Store attacked pump value
-  attack_pred := 1  // Flag indicating system under attack
+  P_attack := P;    // Record what value attacker set pump to
+  attack_pred := 1  // Flag that system is under attack
 }
 
-// Digital Twin monitoring logic
+// Digital Twin's predictive monitoring
 DT_monitor ≡ 
 {
-  // Predictive monitoring
-  future_x1 := x1 + (V1·f1 - V2·P·f2)·t_prediction;
-  future_x2 := x2 + (V2·P·f2)·t_prediction
+  // Calculate future water levels based on current flows
+  // future = current + (rate of change × prediction time)
+  future_x1 := x1 + (V1·f1 - V2·P·f2)·t_prediction;  // Tank 1 prediction
+  future_x2 := x2 + (V2·P·f2)·t_prediction           // Tank 2 prediction
 }
 
-// Unsafe prediction condition
+// Conditions that DT considers unsafe
 unsafe_pred ≡ 
-  future_x1 < LL ∨ future_x1 > HH ∨ 
-  future_x2 < LL ∨ future_x2 > HH
+  future_x1 < LL ∨ future_x1 > HH ∨  // Tank 1 predicted to violate limits
+  future_x2 < LL ∨ future_x2 > HH     // Tank 2 predicted to violate limits
 
-// Digital Twin intervention
+// Digital Twin's intervention actions
 DT_intervention ≡ 
 {
-  // Recovery actions
-  ?(future_x1 > HH ∨ future_x2 > HH); // Overflow prediction
-  {P := 0; V2 := 0}
+  // If overflow predicted in either tank, stop water transfer
+  ?(future_x1 > HH ∨ future_x2 > HH); {P := 0; V2 := 0}
   ∪
-  ?(future_x1 < LL); // Underflow prediction for tank 1
-  {V1 := 1; P := 0}
+  // If tank 1 underflow predicted, allow inflow but stop outflow
+  ?(future_x1 < LL); {V1 := 1; P := 0}
   ∪
-  ?(future_x2 < LL); // Underflow prediction for tank 2
-  {P := 1; V2 := 1}
+  // If tank 2 underflow predicted, start transfer from tank 1
+  ?(future_x2 < LL); {P := 1; V2 := 1}
 }
 
-// System dynamics
+// Physical system dynamics - How water levels change over time
 plant ≡ 
-  x'1 = V1·f1 - V2·P·f2,
-  x'2 = V2·P·f2,
-  t' = 1
+  x'1 = V1·f1 - V2·P·f2,  // Rate of change for tank 1
+  x'2 = V2·P·f2,          // Rate of change for tank 2
+  t' = 1                  // Time advances normally
 
-// Invariant conditions
-Q ≡ t ≤ ε                          // Time bound for each cycle
-∧ x1 ≥ 0 ∧ x2 ≥ 0                  // Water levels are non-negative
-∧ f1 ≥ 0 ∧ f2 ≥ 0                  // Flow rates are non-negative
-∧ t - t_attack ≤ t3                // Haven't reached safety violation time
-∧ (DT_active = 1 → t - t_detect ≤ t_recovery)  // DT intervention time constraint
-∧ (attack_pred = 1 → t - t_attack ≤ t2)        // Attack duration constraint
+// Invariant conditions - Must always hold during continuous evolution
+Q ≡ 
+  t ≤ ε                          // Stay within cycle time bound
+  ∧ x1 ≥ 0 ∧ x2 ≥ 0             // Water levels can't be negative
+  ∧ f1 ≥ 0 ∧ f2 ≥ 0             // Flow rates must be positive
+  ∧ t - t_attack ≤ t3           // Haven't reached point of safety violation
+  // If DT active, must be within recovery window
+  ∧ (DT_active = 1 → t - t_detect ≤ t_recovery)  
+  // If under attack, must be within attack window
+  ∧ (attack_pred = 1 → t - t_attack ≤ t2)        
 
-// Safety condition
-S ≡ LL ≤ x1 ∧ x1 ≤ HH ∧ LL ≤ x2 ∧ x2 ≤ HH  // Water levels stay within safe bounds
+// Safety condition - What we want to prove holds true
+S ≡ LL ≤ x1 ∧ x1 ≤ HH ∧ LL ≤ x2 ∧ x2 ≤ HH  // Water levels always in safe range
