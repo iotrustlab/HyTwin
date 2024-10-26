@@ -1,36 +1,63 @@
-A → [in; {ctrl ∪ ctrl_attack}; t := 0; {plant} & Q]S
+// Main formula: Proves that starting from initial assumptions A, 
+// the system maintains safety conditions S throughout infinite runs
+A → [ (i := *;                                    // Assigns nondeterministic inputs
+       (ctrl := {ctrl_orig ∪ ctrl_attack});       // Control can be either normal or attacked
+       ctrl_dt := ctrl_orig;                      // Digital Twin executes normal control
+       {?(ctrl ≠ ctrl_dt); ctrl := safe_ctrl      // If mismatch detected, apply safe control
+        ∪ ?¬(ctrl ≠ ctrl_dt)};                   // Otherwise continue with current control
+       ctrl;                                      // Execute the selected control
+       {plant & Q})*                             // Evolution of physical system within bounds
+    ] S
 
 Where:
 
-// Initial assumptions
-A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2  // Initial water levels within normal range
-∧ V1 = 0 ∧ V2 = 0 ∧ P = 0               // Valves and pump initially off
-∧ ε ≥ 0 ∧ FL > 0                        // Positive scan cycle time and minimum flow rate
-∧ LL < L1 ∧ LL < L2                     // Lower limits below normal operating range
-∧ L1 < H1 ∧ L2 < H2 ∧ H1 < HH ∧ H2 < HH  // Hierarchical arrangement of thresholds
+// Initial assumptions about system state and parameters
+A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2    // Initial water levels within normal range
+∧ V1 = 0 ∧ V2 = 0 ∧ P = 0                      // Valves and pump initially off
+∧ ε ≥ 0 ∧ FL > 0                               // Positive scan cycle time and min flow rate
+∧ LL < L1 ∧ LL < L2                            // Lower limits below normal operating range
+∧ L1 < H1 ∧ L2 < H2 ∧ H1 < HH ∧ H2 < HH       // Hierarchical arrangement of thresholds
 
-// Nondeterministic input assignment (representing uncertain environment)
-in ≡ f1 := *; f2 := *
+// Nondeterministic input assignment representing uncertain environment
+i ≡ f1 := *; f2 := *                           // Assigns arbitrary values to flow rates
 
-// Normal control logic
-ctrl ≡ { ?(f1 > (HH - x1)/ε); V1 := 0  // Close V1 if potential overflow detected
-∪ ?¬(f1 > (HH - x1)/ε); {?(x1 ≤ L1); V1 := 1 ∪ ?¬(x1 ≤ L1)}  // Open V1 if level too low
-};
-{?(x2 ≤ L2); P := 1; V2 := 1 ∪ ?¬(x2 ≤ L2)};  // Control second tank
-{?(V1·f1 - V2·P·f2 < (LL - x1)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε);
-P := 0; V2 := 0  // Stop pump and close V2 if underflow, low flow, or overflow detected
-∪ ?¬(V1·f1 - V2·P·f2 < (LL - x1)/ε ∨ f2 ≤ FL ∨ V2·P·f2 > (HH - x2)/ε)}
+// Original control logic implementing safety checks and actuator commands
+ctrl_orig ≡ 
+    // Tank 1 overflow prevention
+    {?(f1 > (HH - x1)/ε); V1 := 0              // Close V1 if potential overflow detected
+    ∪ ?¬(f1 > (HH - x1)/ε);                    // If no overflow risk:
+       {?(x1 ≤ L1); V1 := 1                     // Open V1 if level too low
+        ∪ ?¬(x1 ≤ L1)}};                       // Keep V1 as is if level okay
+    
+    // Tank 2 level control
+    {?(x2 ≤ L2); P := 1; V2 := 1               // Turn on pump and open V2 if level low
+     ∪ ?¬(x2 ≤ L2)};                           // Keep settings if level okay
+    
+    // System-wide safety checks
+    {?(V1·f1 - V2·P·f2 < (LL - x1)/ε           // Check for potential underflow in Tank 1
+       ∨ f2 ≤ FL                               // Check for insufficient flow rate
+       ∨ V2·P·f2 > (HH - x2)/ε);              // Check for potential overflow in Tank 2
+     P := 0; V2 := 0                           // If any risk detected, stop pump and close V2
+     ∪ ?¬(V1·f1 - V2·P·f2 < (LL - x1)/ε 
+          ∨ f2 ≤ FL 
+          ∨ V2·P·f2 > (HH - x2)/ε)}           // Keep settings if no risks detected
 
-// Attacked control logic
-ctrl_attack ≡ P := *  // Arbitrary manipulation of all actuators
+// Attack model allowing arbitrary manipulation of pump
+ctrl_attack ≡ P := *                           // Attacker can set pump to any value
 
-// System dynamics (physical behavior of the water tanks)
-plant ≡ x'1 = V1·f1 - V2·P·f2, x'2 = V2·P·f2, t' = 1
+// Safe control strategy when attack detected
+safe_ctrl ≡ P := 0; V1 := 0; V2 := 0          // Safely shut down all components
 
-// Invariant conditions (must hold throughout the continuous evolution)
-Q ≡ t ≤ ε            // Time bound for each cycle
-∧ x1 ≥ 0 ∧ x2 ≥ 0 // Water levels are non-negative
-∧ f1 ≥ 0 ∧ f2 ≥ 0 // Flow rates are non-negative
+// Continuous dynamics of the physical system
+plant ≡ x'1 = V1·f1 - V2·P·f2,                // Rate of change of water level in Tank 1
+        x'2 = V2·P·f2,                         // Rate of change of water level in Tank 2
+        t' = 1                                 // Time evolution
 
-// Safety condition (must be maintained despite attacks)
-S ≡ LL ≤ x1 ∧ x1 ≤ HH ∧ LL ≤ x2 ∧ x2 ≤ HH  // Water levels stay within safe bounds
+// Invariant conditions that must hold during continuous evolution
+Q ≡ t ≤ ε                                     // Time bound for each control cycle
+∧ x1 ≥ 0 ∧ x2 ≥ 0                            // Water levels cannot be negative
+∧ f1 ≥ 0 ∧ f2 ≥ 0                            // Flow rates cannot be negative
+
+// Safety conditions that must be maintained despite attacks
+S ≡ LL ≤ x1 ∧ x1 ≤ HH                        // Tank 1 water level within safe bounds
+∧ LL ≤ x2 ∧ x2 ≤ HH                          // Tank 2 water level within safe bounds
