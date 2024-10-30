@@ -1,0 +1,24 @@
+A → [ (i := *;                                    // Assigns nondeterministic inputs
+      x_sensor := {x1 ∪ stealthy_sensor};        // Sensor reading can be real or attacked
+      ctrl := ctrl_orig(x_sensor);               // Control based on sensor reading
+      ctrl_dt := ctrl_orig(x1);                  // Digital Twin uses true state
+      {?(|x_sensor - x1| > detection_threshold); // Detect if deviation exceeds threshold
+       ctrl := safe_ctrl                         // If attack detected, apply safe control
+       ∪ ?¬(|x_sensor - x1| > detection_threshold)}; // Otherwise continue
+      ctrl;                                      // Execute control
+      {plant & Q})*                             // Evolution of system
+   ] S
+
+Where:
+
+// Initial assumptions (same as before)
+A ≡ /* ... same as before ... */
+
+// Stealthy sensor attack - manipulates within detection threshold
+stealthy_sensor ≡ {
+   x1 + δ;                                      // Modify true value by small delta
+   ?(|δ| ≤ detection_threshold)                 // Stay within detection limits
+}
+
+// Rest remains same as before
+ctrl_orig, safe_ctrl, plant, Q, S ≡ /* ... same as before ... */
