@@ -1,0 +1,44 @@
+A → [ (i := *;                                    // Assigns nondeterministic inputs
+       (ctrl := {ctrl_orig ∪ stealthy_attack});   // Control can be normal or attacked
+       ctrl_dt := ctrl_orig;                      // Digital Twin executes normal control
+       {?(ctrl ≠ ctrl_dt); ctrl := safe_ctrl      // If mismatch detected, apply safe control
+        ∪ ?¬(ctrl ≠ ctrl_dt)};                   // Otherwise continue with current control
+       ctrl;                                      // Execute the selected control
+       {plant & Q})*                             // Evolution of physical system
+    ] S
+
+Where:
+
+// Initial assumptions (same as before)
+A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2    
+    ∧ V1 = 0 ∧ V2 = 0 ∧ P = 0                  
+    ∧ ε ≥ 0 ∧ FL > 0                           
+    ∧ LL < L1 ∧ LL < L2                        
+    ∧ L1 < H1 ∧ L2 < H2 ∧ H1 < HH ∧ H2 < HH   
+
+// Inputs (same as before)
+i ≡ f1 := *; f2 := *                           
+
+// Original control (same as before)
+ctrl_orig ≡ /* ... same as before ... */
+
+// Stealthy attack that waits for legitimate conditions
+stealthy_attack ≡ {
+    ?(x2 ≤ L2 + δ);                            // Wait until near legitimate trigger point
+    ?(x1 ≥ H1 - δ);                            // Wait for vulnerable system state
+    P := 0                                      // Maliciously turn off pump
+}
+
+// Safe control when attack detected
+safe_ctrl ≡ P := 0; V1 := 0; V2 := 0           // Safe shutdown
+
+// Plant dynamics (same as before)
+plant ≡ x'1 = V1·f1 - V2·P·f2,                
+        x'2 = V2·P·f2,                         
+        t' = 1                                 
+
+// Evolution domain (same as before)
+Q ≡ t ≤ ε ∧ x1 ≥ 0 ∧ x2 ≥ 0 ∧ f1 ≥ 0 ∧ f2 ≥ 0
+
+// Safety conditions (same as before)
+S ≡ LL ≤ x1 ∧ x1 ≤ HH ∧ LL ≤ x2 ∧ x2 ≤ HH
