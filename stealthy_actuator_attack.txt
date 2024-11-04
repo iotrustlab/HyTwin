@@ -19,8 +19,27 @@ A ≡ L1 ≤ x1 ∧ x1 ≤ H1 ∧ L2 ≤ x2 ∧ x2 ≤ H2
 // Inputs (same as before)
 i ≡ f1 := *; f2 := *                           
 
-// Original control (same as before)
-ctrl_orig ≡ /* ... same as before ... */
+// Original control logic implementing safety checks and actuator commands
+ctrl_orig ≡ 
+    // Tank 1 overflow prevention
+    {?(f1 > (HH - x1)/ε); V1 := 0              // Close V1 if potential overflow detected
+    ∪ ?¬(f1 > (HH - x1)/ε);                    // If no overflow risk:
+       {?(x1 ≤ L1); V1 := 1                     // Open V1 if level too low
+        ∪ ?¬(x1 ≤ L1)}};                       // Keep V1 as is if level okay
+    
+    // Tank 2 level control
+    {?(x2 ≤ L2); P := 1; V2 := 1               // Turn on pump and open V2 if level low
+     ∪ ?¬(x2 ≤ L2)};                           // Keep settings if level okay
+    
+    // System-wide safety checks
+    {?(V1·f1 - V2·P·f2 < (LL - x1)/ε           // Check for potential underflow in Tank 1
+       ∨ f2 ≤ FL                               // Check for insufficient flow rate
+       ∨ V2·P·f2 > (HH - x2)/ε);              // Check for potential overflow in Tank 2
+     P := 0; V2 := 0                           // If any risk detected, stop pump and close V2
+     ∪ ?¬(V1·f1 - V2·P·f2 < (LL - x1)/ε 
+          ∨ f2 ≤ FL 
+          ∨ V2·P·f2 > (HH - x2)/ε)}           // Keep settings if no risks detected
+
 
 // Stealthy attack that waits for legitimate conditions
 stealthy_attack ≡ {
