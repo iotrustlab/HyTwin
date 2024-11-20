@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0201" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ns1="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2023-10-16T11:38:57"/>
+  <contentHeader name="Unnamed" modificationDateTime="2023-10-17T15:34:36">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="10" y="10"/>
+      </fbd>
+      <ld>
+        <scaling x="10" y="10"/>
+      </ld>
+      <sfc>
+        <scaling x="10" y="10"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="plc2" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="ColorSensor_RED" address="%QW0">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="ColorSensor_GREEN" address="%QW1">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="ColorSensor_BLUE" address="%QW2">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="RangeSensor" address="%QW3">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="Pump" address="%QX0.4">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+            <variable name="Doser_RED" address="%QX0.6">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+            <variable name="Doser_BLUE" address="%QX0.7">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="settleTime">
+              <type>
+                <TIME/>
+              </type>
+              <initialValue>
+                <simpleValue value="T#700ms"/>
+              </initialValue>
+            </variable>
+            <variable name="doseTime">
+              <type>
+                <TIME/>
+              </type>
+              <initialValue>
+                <simpleValue value="T#2000ms"/>
+              </initialValue>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="treatmentComplete" address="%QX0.0">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+            <variable name="stage" address="%QW4">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="desiredDistanceFill">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="7.0"/>
+              </initialValue>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="measuredDistance" address="%QD1">
+              <type>
+                <REAL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="minRed">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="20"/>
+              </initialValue>
+            </variable>
+            <variable name="doserRedTimer">
+              <type>
+                <derived name="TON"/>
+              </type>
+            </variable>
+            <variable name="doserBlueTimer">
+              <type>
+                <derived name="TON"/>
+              </type>
+            </variable>
+            <variable name="settleTimer">
+              <type>
+                <derived name="TON"/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="doseTimerDone" address="%QX1.2">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="settleEN">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[
+(*Workaround to distance measure bug*)
+measuredDistance :=  INT_TO_REAL(RangeSensor)/100.0;
+desiredDistanceFill := 7.0;
+minRed := 20;
+doseTime := T#3000ms;
+settleTime := T#5000ms;
+
+doserRedTimer(IN:=Doser_RED, PT:=doseTime);
+doserBlueTimer(IN:=Doser_BLUE,PT:=doseTime);
+doseTimerDone := doserRedTimer.Q;
+settleTimer(IN:=settleEN, PT:=settleTime);
+
+CASE stage OF
+    0:  (*Filling stage: it will fill up to a certain amount that corresponds to a certain distance*)
+    
+        IF measuredDistance > desiredDistanceFill THEN
+          Pump := TRUE;
+        ELSE
+          Pump := FALSE;
+          stage := 1;
+        END_IF;
+        
+   1:  (*Treatment stage*)
+    
+        IF ColorSensor_RED < minRed THEN (*Ensure minimum red value is inserted*)
+          stage := 2;
+          Doser_RED := TRUE;
+          
+        ELSIF ColorSensor_RED > ColorSensor_BLUE  THEN (*Ensure blue quantity is > Red *)
+          
+            stage := 3;
+            Doser_BLUE := TRUE;
+        
+        ELSE  (*Treatment complete*)
+          
+          stage := 5;
+          
+        END_IF;
+        
+    2:  (*Red Dosing Stage*)
+    
+        IF doserRedTimer.Q THEN
+          Doser_RED := FALSE;
+          stage := 4;
+          settleEN := True;
+          (*settleTimer(IN:= True, PT:= settleTime); (*let the dose settle*)
+        END_IF;
+        
+    3: (* Blue Dosing Stage*)
+    
+        IF doserBlueTimer.Q THEN
+          Doser_BLUE := FALSE;
+          stage := 4;
+          settleEN := True;
+        END_IF;
+        
+    4: (*Settling Stage for Dosage*)
+    
+        IF settleTimer.Q THEN
+          stage := 1;
+          settleEN := False;
+        END_IF;
+    
+    5: (*Treatment Complete*)
+    
+      treatmentComplete := TRUE;
+      
+END_CASE;
+]]></xhtml:p>
+          </ST>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="task0" priority="0" interval="T#20ms">
+            <pouInstance name="instance0" typeName="plc2"/>
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
