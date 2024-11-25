@@ -1,5 +1,5 @@
 from pymodbus.constants import Endian
-from pymodbus.client import ModbusTcpClient
+from pymodbus.client.sync import ModbusTcpClient
 from pymodbus.payload import BinaryPayloadBuilder
 import time
 import random

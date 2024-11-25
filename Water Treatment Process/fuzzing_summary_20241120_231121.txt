@@ -1,0 +1,81 @@
+Fuzzing Campaign Summary
+======================
+Start Time: 2024-11-20 23:11:21.070798
+
+
+Iteration 1 Results:
+Violations found: 11
+
+Iteration 2 Results:
+Violations found: 11
+
+Iteration 3 Results:
+Violations found: 11
+
+Iteration 4 Results:
+Violations found: 11
+
+Iteration 5 Results:
+Violations found: 11
+
+Final Campaign Results
+=====================
+Total iterations: 5
+Total violations: 55
+
+Violation Details:
+Time: 1732169481.934214, Range: 11.00, Pump: True, VIOLATION: Pump ON when range_sensor (11.00) > DESIRED_DISTANCE (10)
+Time: 1732169482.2360954, Range: 12.00, Pump: True, VIOLATION: Pump ON when range_sensor (12.00) > DESIRED_DISTANCE (10)
+Time: 1732169482.5389328, Range: 13.00, Pump: True, VIOLATION: Pump ON when range_sensor (13.00) > DESIRED_DISTANCE (10)
+Time: 1732169482.842199, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169483.145154, Range: 20.00, Pump: True, VIOLATION: Pump ON when range_sensor (20.00) > DESIRED_DISTANCE (10)
+Time: 1732169483.4479358, Range: 25.00, Pump: True, VIOLATION: Pump ON when range_sensor (25.00) > DESIRED_DISTANCE (10)
+Time: 1732169483.750081, Range: 30.00, Pump: True, VIOLATION: Pump ON when range_sensor (30.00) > DESIRED_DISTANCE (10)
+Time: 1732169484.3557515, Range: 10.50, Pump: True, VIOLATION: Pump ON when range_sensor (10.50) > DESIRED_DISTANCE (10)
+Time: 1732169484.9604404, Range: 10.20, Pump: True, VIOLATION: Pump ON when range_sensor (10.20) > DESIRED_DISTANCE (10)
+Time: 1732169485.2622082, Range: 10.80, Pump: True, VIOLATION: Pump ON when range_sensor (10.80) > DESIRED_DISTANCE (10)
+Time: 1732169485.8669055, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169488.0776942, Range: 11.00, Pump: True, VIOLATION: Pump ON when range_sensor (11.00) > DESIRED_DISTANCE (10)
+Time: 1732169488.379917, Range: 12.00, Pump: True, VIOLATION: Pump ON when range_sensor (12.00) > DESIRED_DISTANCE (10)
+Time: 1732169488.682378, Range: 13.00, Pump: True, VIOLATION: Pump ON when range_sensor (13.00) > DESIRED_DISTANCE (10)
+Time: 1732169488.985068, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169489.2881644, Range: 20.00, Pump: True, VIOLATION: Pump ON when range_sensor (20.00) > DESIRED_DISTANCE (10)
+Time: 1732169489.590709, Range: 25.00, Pump: True, VIOLATION: Pump ON when range_sensor (25.00) > DESIRED_DISTANCE (10)
+Time: 1732169489.8932374, Range: 30.00, Pump: True, VIOLATION: Pump ON when range_sensor (30.00) > DESIRED_DISTANCE (10)
+Time: 1732169490.4998808, Range: 10.50, Pump: True, VIOLATION: Pump ON when range_sensor (10.50) > DESIRED_DISTANCE (10)
+Time: 1732169491.1038148, Range: 10.20, Pump: True, VIOLATION: Pump ON when range_sensor (10.20) > DESIRED_DISTANCE (10)
+Time: 1732169491.4059615, Range: 10.80, Pump: True, VIOLATION: Pump ON when range_sensor (10.80) > DESIRED_DISTANCE (10)
+Time: 1732169492.0128665, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169494.2260723, Range: 11.00, Pump: True, VIOLATION: Pump ON when range_sensor (11.00) > DESIRED_DISTANCE (10)
+Time: 1732169494.5287328, Range: 12.00, Pump: True, VIOLATION: Pump ON when range_sensor (12.00) > DESIRED_DISTANCE (10)
+Time: 1732169494.8304422, Range: 13.00, Pump: True, VIOLATION: Pump ON when range_sensor (13.00) > DESIRED_DISTANCE (10)
+Time: 1732169495.1340632, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169495.437362, Range: 20.00, Pump: True, VIOLATION: Pump ON when range_sensor (20.00) > DESIRED_DISTANCE (10)
+Time: 1732169495.7412333, Range: 25.00, Pump: True, VIOLATION: Pump ON when range_sensor (25.00) > DESIRED_DISTANCE (10)
+Time: 1732169496.0433278, Range: 30.00, Pump: True, VIOLATION: Pump ON when range_sensor (30.00) > DESIRED_DISTANCE (10)
+Time: 1732169496.6482854, Range: 10.50, Pump: True, VIOLATION: Pump ON when range_sensor (10.50) > DESIRED_DISTANCE (10)
+Time: 1732169497.252412, Range: 10.20, Pump: True, VIOLATION: Pump ON when range_sensor (10.20) > DESIRED_DISTANCE (10)
+Time: 1732169497.555261, Range: 10.80, Pump: True, VIOLATION: Pump ON when range_sensor (10.80) > DESIRED_DISTANCE (10)
+Time: 1732169498.1618702, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169500.3745632, Range: 11.00, Pump: True, VIOLATION: Pump ON when range_sensor (11.00) > DESIRED_DISTANCE (10)
+Time: 1732169500.6773639, Range: 12.00, Pump: True, VIOLATION: Pump ON when range_sensor (12.00) > DESIRED_DISTANCE (10)
+Time: 1732169500.979699, Range: 13.00, Pump: True, VIOLATION: Pump ON when range_sensor (13.00) > DESIRED_DISTANCE (10)
+Time: 1732169501.2831552, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169501.5859742, Range: 20.00, Pump: True, VIOLATION: Pump ON when range_sensor (20.00) > DESIRED_DISTANCE (10)
+Time: 1732169501.8889315, Range: 25.00, Pump: True, VIOLATION: Pump ON when range_sensor (25.00) > DESIRED_DISTANCE (10)
+Time: 1732169502.1907272, Range: 30.00, Pump: True, VIOLATION: Pump ON when range_sensor (30.00) > DESIRED_DISTANCE (10)
+Time: 1732169502.7963862, Range: 10.50, Pump: True, VIOLATION: Pump ON when range_sensor (10.50) > DESIRED_DISTANCE (10)
+Time: 1732169503.4006174, Range: 10.20, Pump: True, VIOLATION: Pump ON when range_sensor (10.20) > DESIRED_DISTANCE (10)
+Time: 1732169503.7031791, Range: 10.80, Pump: True, VIOLATION: Pump ON when range_sensor (10.80) > DESIRED_DISTANCE (10)
+Time: 1732169504.3095706, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169506.5220077, Range: 11.00, Pump: True, VIOLATION: Pump ON when range_sensor (11.00) > DESIRED_DISTANCE (10)
+Time: 1732169506.823962, Range: 12.00, Pump: True, VIOLATION: Pump ON when range_sensor (12.00) > DESIRED_DISTANCE (10)
+Time: 1732169507.1261086, Range: 13.00, Pump: True, VIOLATION: Pump ON when range_sensor (13.00) > DESIRED_DISTANCE (10)
+Time: 1732169507.429896, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
+Time: 1732169507.7330196, Range: 20.00, Pump: True, VIOLATION: Pump ON when range_sensor (20.00) > DESIRED_DISTANCE (10)
+Time: 1732169508.0356922, Range: 25.00, Pump: True, VIOLATION: Pump ON when range_sensor (25.00) > DESIRED_DISTANCE (10)
+Time: 1732169508.338397, Range: 30.00, Pump: True, VIOLATION: Pump ON when range_sensor (30.00) > DESIRED_DISTANCE (10)
+Time: 1732169508.9437733, Range: 10.50, Pump: True, VIOLATION: Pump ON when range_sensor (10.50) > DESIRED_DISTANCE (10)
+Time: 1732169509.5502882, Range: 10.20, Pump: True, VIOLATION: Pump ON when range_sensor (10.20) > DESIRED_DISTANCE (10)
+Time: 1732169509.8533156, Range: 10.80, Pump: True, VIOLATION: Pump ON when range_sensor (10.80) > DESIRED_DISTANCE (10)
+Time: 1732169510.4597704, Range: 15.00, Pump: True, VIOLATION: Pump ON when range_sensor (15.00) > DESIRED_DISTANCE (10)
