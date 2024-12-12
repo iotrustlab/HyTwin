@@ -1,5 +1,0 @@
-- Making the representations process - aware vs non-aware (categorization actuator vs sensor)
-- Original Model is a blueprint, ctrl_attack could be different for various attack categorization
-- Syntactically feed it into the KYX
-- Abstract Originally, then in the evaluation concrete representations (proofs)
-- 
