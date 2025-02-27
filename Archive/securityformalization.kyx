@@ -1,0 +1,201 @@
+Definitions
+  /* Filled from Example 1 */
+  HP inflow ::= {
+    V1 := *;  /* Nondeterministically choose V1 */
+    ?(f1 ≥ 0 ∧ (V1 = 1 -> x1 < H1) ∧ (V1 = 0 -> x1 ≥ L1));
+  };
+
+  HP outflow ::= {
+    P := *; V2 := *;
+    ?(f2 ≥ 0 ∧ (P = 1 -> x2 > L2) ∧ (P = 0 -> x2 ≤ L2));
+  };
+
+  HP protect ::= {
+    P := *; V2 := *;
+    ?(V1*f1 - V2*P*f2 ≥ (LL - x1) / e ∧ f2 > FL ∧ V2*P*f2 ≤ (HH - x2) / e);
+  };
+
+  Bool Qtank <-> (x1 ≥ 0 ∧ x2 ≥ 0 ∧ f1 ≥ 0 ∧ f2 ≥ 0);
+
+  HP planttank ::= {
+    { x1' = V1 * f1 - V2 * P * f2, x2' = V2 * P * f2 & Qtank };
+  };
+
+  HP ctrl ::= {
+    inflow;
+    outflow;
+    protect;
+  };
+
+  HP tank ::= {
+    {
+      f1 := *;
+      f2 := *;
+      ctrl;
+      t := 0;
+      planttank;
+    }*
+  };
+
+
+
+
+  /* Example 2 */
+  HP directActuatorAttack ::= {
+    V1 := 1;  /* Force valve open */
+    P := 1;   /* Force pump on */
+  };
+
+
+
+HP tankattacked ::= {
+  i := *;  /* Nondeterministic sensor inputs */
+  
+  (V1 := *; P := *;) ∪  /* Normal system control (ctrl) */
+  (V1 := 1; P := 1;);   /* Attacker forces valve open and pump on */
+  
+  t := 0;  /* Reset clock for scan cycle */
+  
+  {  
+    /* Plant dynamics evolve under attack */
+    x1' = f1 - V2 * f2, 
+    x2' = V2 * f2 
+    & x1 ≥ 0 & x2 ≥ 0 & f1 ≥ 0 & f2 ≥ 0 
+    & t ≤ ε
+  };
+}*;
+
+
+
+/* Example 5: Timed Attack */
+  HP timedtankattacked ::= {
+    i := *;  /* Nondeterministic sensor inputs */
+    
+    (V1 := *; P := *;) ∪  /* Normal system control (ctrl) */
+    (V1 := 1; P := 1;);   /* Attacker forces valve open and pump on */
+    
+    t := 0;  /* Start attack timer */
+    
+    {  
+      x1' = f1 - V2 * f2, 
+      x2' = V2 * f2, 
+      t' = 1  /* Track elapsed time */
+      & x1 ≥ 0 & x2 ≥ 0 & f1 ≥ 0 & f2 ≥ 0 
+      & t ≤ τ  /* Attack duration constraint */
+    };
+    
+    ?(t ≤ τ);  /* Ensure attack lasts at most τ time units */
+  }*;
+  
+End.
+
+
+
+
+
+/* Safety theorem Example 1 */
+Theorem "NFM25/Water level stays within limits"
+  Definitions
+    Bool Atank <-> ();
+    Bool Stank <-> ();
+    Real LL;
+    /* ... */
+  End.
+
+  ProgramVariables
+    Real x1;
+    /* ... */
+  End.
+
+  Problem
+
+  End.
+End.
+
+/* Example 3 */
+Theorem "NFM25/Direct actuator attack mitigation is effective"
+
+End.
+
+/* Example 4 */
+Theorem "NFM25/Direct Actuator Attack Monitor does not miss alarms"
+  Definitions
+    Real v1post;
+    Real ppost;
+  End.
+
+  ProgramVariables
+    Real v1;
+    Real p;
+  End.
+
+  Problem
+    (v1post = 1 & ppost = 1) 
+    -> 
+    <v1:=1; p:=1;>(v1post=v1 & ppost = p)
+  End.
+End.
+
+/* Example 5 */
+Theorem "NFM25/Mitigation horizon"  
+  ProgramVariabels
+
+  End.
+
+  Problem
+
+  End.
+End.
+
+/* Example 6 */
+Theorem "NFM25/Delayed Actuator Attack Mitigation"
+  Definitions
+    HP a ::= {
+      c:=0;
+      timedtankattacked;
+      ?c<=tau;
+      v2:=1;
+      p2:=1;
+      tankattacked;
+    }
+  End.
+
+  ProgramVariables
+
+  End.
+
+  Problem
+
+  End.
+End.
+
+/* Case Study Models */
+Theorem "NFM25/Valve Attack"
+  ProgramVariables
+
+  End.
+
+  Problem
+
+  End.
+End.
+
+Theorem "NFM25/Stealthy Sensor Attack"
+  ProgramVariables
+
+  End.
+
+  Problem
+
+  End.
+End.
+
+Theorem "NFM25/Sensor Spike Attack"
+  ProgramVariables
+
+  End.
+
+  Problem
+
+  End.
+End.
