@@ -1,5 +1,21 @@
 Definitions
+  /* System parameters */
+  Real LL;      /* Lower level alarm */
+  Real HH;      /* Upper level alarm */
+  Real L1, H1;  /* Tank 1 trigger thresholds */
+  Real L2, H2;  /* Tank 2 trigger thresholds */
+  Real FL;      /* Pump minimum flow rate */
+  Real T;       /* Maximum scan-cyle duration */
+
   /* Example 1 Definitions */
+
+  /* Flow sensing */
+  HP sense ::= {
+    f1 := *;
+    f2 := *;
+    /* Flows are non-negative */
+    ?(f1 ≥ 0 ∧ f2 ≥ 0);
+  };
   
   /* Inflow Logic */
   HP inflow ::= {
@@ -18,23 +34,20 @@ Definitions
 
   /* Protection Logic */
   HP protect ::= {
-    P2 := *; V2 := *;
-    ?(P2 = 0 ∨ P2 = 1);  
-    ?(V2 = 0 ∨ V2 = 1);  
-    ?(V1*f1 - V2*P2*f2 ≥ (LL - x1) / e ∧ f2 > FL ∧ V2*P2*f2 ≤ (HH - x2) / e);
+    if (V1*f1 - V2*P2*f2 < (LL - x1) / T ∨ f2 ≤ FL ∨ V2*P2*f2 > (HH - x2) / T) {
+      P2 := 0;
+      V2 := 0;
+    }
   };
-
-  /* Tank Safety Condition */
-  Bool Qtank <-> (x1 ≥ 0 ∧ x2 ≥ 0 ∧ f1 ≥ 0 ∧ f2 ≥ 0);
 
   /* Plant Dynamics */
   HP planttank ::= {
-    ?Qtank;  /* Ensure physical constraints hold before execution */
-    [ 
+    { 
       x1' = V1 * f1 - V2 * P2 * f2, 
-      x2' = V2 * P2 * f2, 
-      t' = 1 
-    ];
+      x2' = V2 * P2 * f2,
+      t' = 1
+      & Qtank(x1,x2,f1,f2) ∧ t ≤ T
+    };
   };
 
   /* Controller Execution */
@@ -47,18 +60,14 @@ Definitions
   /* Tank System with Controller and Dynamics */
   HP tank ::= {
     {
-      f1 := *;
-      f2 := *;
-      ?(f1 ≥ 0 ∧ f2 ≥ 0);  /* Ensure valid flow rates */
+      sense;
       ctrl;
       t := 0;
       planttank;
     }*
   };
 
-
-
-/* Example 2: Direct Actuator Attack */
+  /* Example 2: Direct Actuator Attack */
 
   /* Attacker directly forces valve open and pump on */
   HP directActuatorAttack ::= {
@@ -66,103 +75,88 @@ Definitions
     P2 := 1;   /* Force pump on */
   };
 
+  /* Normal system control */
+  HP nominalCtrl ::= {
+    V1 := *; 
+    P2 := *; 
+    ?(V1 = 0 ∨ V1 = 1); 
+    ?(P2 = 0 ∨ P2 = 1);
+  };
+
   /* Tank Under Attack Model */
   HP tankattacked ::= {
-    i := *;  /* Nondeterministic sensor inputs */
+    {
+      sense;
 
-    /* The system can either run normally or be attacked */
-    ( 
-      (V1 := *; P2 := *; ?(V1 = 0 ∨ V1 = 1); ?(P2 = 0 ∨ P2 = 1))  /* Normal system control */
-      ∪
-      directActuatorAttack  /* Attacker forces valve open and pump on */
-    );
+      /* The system can either run normally or be attacked */
+      { 
+        nominalCtrl;
+        ∪
+        directActuatorAttack;
+      };
 
-    t := 0;  /* Reset clock for scan cycle */
+      t := 0;  /* Reset clock for scan cycle */
 
-    /* Ensure system remains within valid physical constraints */
-    ?Qtank;
+      /* Plant dynamics evolve under attack */
+      planttank;
+    }*
+  };
 
-    /* Plant dynamics evolve under attack */
-    [  
-      x1' = V1 * f1 - V2 * P2 * f2, 
-      x2' = V2 * P2 * f2, 
-      t' = 1 
-    ];
-}*;
-
-
-
-Definitions
   /* Example 5: Timed Attack */
+  /* TODO: add attack timer */
   HP timedtankattacked ::= {
-    i := *;  /* Nondeterministic sensor inputs */
+    {
+      sense;
 
-    /* The system can either run normally or be attacked */
-    ( 
-      (V1 := *; P2 := *; ?(V1 = 0 ∨ V1 = 1); ?(P2 = 0 ∨ P2 = 1))  /* Normal system control */
-      ∪
-      (V1 := 1; P2 := 1)  /* Attacker forces valve open and pump on */
-    );
+      /* The system can either run normally or be attacked */
+      { 
+        nominalCtrl;
+        ∪
+        {V1 := 1; P2 := 1;}  /* Attacker forces valve open and pump on */
+      };
 
-    t := 0;  /* Start attack timer */
+      t := 0;  /* Start attack timer */
 
-    /* Ensure system remains within valid physical constraints */
-    ?Qtank;
+      /* Plant dynamics evolve under attack */
+      planttank;      
+    }*
+  };
 
-    /* Plant dynamics evolve under attack */
-    [  
-      x1' = V1 * f1 - V2 * P2 * f2, 
-      x2' = V2 * P2 * f2, 
-      t' = 1 
-    ];
+  /* Tank evolution domain (levels and flows are non-negative) */
+  Bool Qtank(Real x1, Real x2, Real f1, Real f2) <-> (x1 ≥ 0 ∧ x2 ≥ 0 ∧ f1 ≥ 0 ∧ f2 ≥ 0);
 
-    /* Ensure attack lasts at most τ time units */
-    ?(t ≤ τ);
-  }*;
+  /* Initial nominal conditions */
+  Bool Atank(Real x1, Real x2, Real f1, Real f2, Real t) <-> (
+      LL < L1 ∧ L1 ≤ x1 ∧ x1 ≤ H1 ∧ H1 < HH     /* Tank 1 safe level */
+    ∧ LL < L2 ∧ L2 ≤ x2 ∧ x2 ≤ H2 ∧ H2 < HH     /* Tank 2 safe level */
+    ∧ f1 ≥ 0 ∧ f2 ≥ 0                           /* Valid flow rates */
+    ∧ t = 0                                     /* Initial time */
+  );
+
+  /* Safety property: Water levels always within bounds */
+  Bool Stank(Real x1, Real x2) <-> (
+      LL ≤ x1 ∧ x1 ≤ HH 
+    ∧ LL ≤ x2 ∧ x2 ≤ HH
+  );
 
 End.
 
 
-
-
-
-
 /* Safety theorem Example 1 */
 Theorem "NFM25/Water level stays within limits"
-  Definitions
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Safety property: Water levels always within bounds */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
-    
-    /* System parameters */
-    Real LL;  /* Lower level alarm */
-    Real HH;  /* Upper level alarm */
-    Real L1, H1;  /* Tank 1 trigger thresholds */
-    Real L2, H2;  /* Tank 2 trigger thresholds */
-    Real f1, f2;  /* Flow rates */
-    Real t;  /* Timer */
-  End.
-
   ProgramVariables
-    Real x1;  /* Water level in Tank 1 */
-    Real x2;  /* Water level in Tank 2 */
-    Real V1;  /* Valve 1 state */
-    Real V2;  /* Valve 2 state */
-    Real P2;  /* Pump 2 state */
+    Real x1;      /* Water level in Tank 1 */
+    Real x2;      /* Water level in Tank 2 */
+    Real f1, f2;  /* Flow rates */    
+    Real V1;      /* Valve 1 state */
+    Real V2;      /* Valve 2 state */
+    Real P2;      /* Pump 2 state */
+    Real t;       /* Timer */
   End.
 
   Problem
     /* Show that if Atank holds, then after running the tank program, Stank holds */
-    Atank -> [tank] Stank;
+    Atank(x1,x2,f1,f2,t) -> [tank;]Stank(x1,x2)
   End.
 End.
 
@@ -170,19 +164,6 @@ End.
 /* Example 3 */
 Theorem "NFM25/Direct actuator attack mitigation is effective"
   Definitions
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Safety property: Water levels always within bounds */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
-
     /* Attack: Forces valve open and pump on */
     HP directActuatorAttack ::= {
       V1 := 1;  /* Force valve open */
@@ -198,18 +179,18 @@ Theorem "NFM25/Direct actuator attack mitigation is effective"
   End.
 
   ProgramVariables
-    Real x1;  /* Water level in Tank 1 */
-    Real x2;  /* Water level in Tank 2 */
-    Real V1;  /* Valve 1 state */
-    Real V2;  /* Valve 2 state */
-    Real P2;  /* Pump 2 state */
+    Real x1;      /* Water level in Tank 1 */
+    Real x2;      /* Water level in Tank 2 */
+    Real V1;      /* Valve 1 state */
+    Real V2;      /* Valve 2 state */
+    Real P2;      /* Pump 2 state */
     Real f1, f2;  /* Flow rates */
-    Real t;  /* Timer */
+    Real t;       /* Timer */
   End.
 
   Problem
     /* If system starts safe, gets attacked, and mitigation is applied, it remains safe */
-    Atank -> [directActuatorAttack; mitigation] Stank;
+    Atank(x1,x2,f1,f2,t) -> [directActuatorAttack; mitigation;]Stank(x1,x2)
   End.
 End.
 
@@ -227,59 +208,21 @@ Theorem "NFM25/Direct Actuator Attack Monitor does not miss alarms"
   End.
 
   Problem
-    (v1post = 1 & ppost = 1) 
+    (v1post = 1 ∧ ppost = 1) 
     -> 
-    <v1:=1; p:=1;>(v1post=v1 & ppost = p)
+    <v1:=1; p:=1;>(v1post=v1 ∧ ppost = p)
   End.
 End.
 
 /* Example 5: Mitigation Horizon */
 Theorem "NFM25/Mitigation horizon"
   Definitions
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Attack lasts for at most τ time units */
-    HP timedtankattacked ::= {
-      i := *;  /* Nondeterministic sensor inputs */
-
-      /* The system can either run normally or be attacked */
-      ( 
-        (V1 := *; P2 := *; ?(V1 = 0 ∨ V1 = 1); ?(P2 = 0 ∨ P2 = 1))  /* Normal system control */
-        ∪
-        (V1 := 1; P2 := 1)  /* Attacker forces valve open and pump on */
-      );
-
-      t := 0;  /* Start attack timer */
-      ?Qtank;  /* Ensure valid state before evolution */
-
-      /* Plant dynamics evolve under attack */
-      [  
-        x1' = V1 * f1 - V2 * P2 * f2, 
-        x2' = V2 * P2 * f2, 
-        t' = 1 
-      ];
-
-      /* Ensure attack lasts at most τ time units */
-      ?(t ≤ τ);
-    };
-
-    /* Mitigation must be applied before time τ */
+    /* Mitigation must be applied before time T */
     HP mitigation ::= {
-      ?(t ≤ τ);  /* Ensure mitigation occurs within the horizon */
+      ?(t ≤ T);  /* Ensure mitigation occurs within the horizon */
       V1 := 0;
       P2 := 0;
-    };
-
-    /* Safety property: System must remain within safe limits */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
+    };    
   End.
 
   ProgramVariables
@@ -288,13 +231,13 @@ Theorem "NFM25/Mitigation horizon"
     Real V1;  /* Valve 1 state */
     Real V2;  /* Valve 2 state */
     Real P2;  /* Pump 2 state */
+    Real f1, f2;  /* Flow rates */    
     Real t;   /* Attack timer */
-    Real τ;   /* Maximum mitigation horizon */
   End.
 
   Problem
-    /* Prove that if the attack occurs, mitigation within time τ prevents failure */
-    Atank -> [timedtankattacked; mitigation] Stank;
+    /* Prove that if the attack occurs, mitigation within time T prevents failure */
+    Atank(x1,x2,f1,f2,t) -> [{timedtankattacked; mitigation;}*]Stank(x1,x2)
   End.
 End.
 
@@ -304,57 +247,19 @@ Theorem "NFM25/Delayed Actuator Attack Mitigation"
   Definitions
     /* Delayed Mitigation Strategy */
     HP delayedMitigation ::= {
-      ?(t ≤ τ);  /* Ensure the mitigation horizon has not been exceeded */
+      ?(t ≤ T);  /* Ensure the mitigation horizon has not been exceeded */
       V2 := 1;   /* Open outflow valve */
       P2 := 1;   /* Activate pump to drain excess water */
-    };
-
-    /* Attack lasts for at most τ time units */
-    HP timedtankattacked ::= {
-      i := *;  /* Nondeterministic sensor inputs */
-
-      /* The system can either run normally or be attacked */
-      ( 
-        (V1 := *; P2 := *; ?(V1 = 0 ∨ V1 = 1); ?(P2 = 0 ∨ P2 = 1))  /* Normal system control */
-        ∪
-        (V1 := 1; P2 := 1)  /* Attacker forces valve open and pump on */
-      );
-
-      t := 0;  /* Start attack timer */
-      ?Qtank;  /* Ensure valid state before evolution */
-
-      /* Plant dynamics evolve under attack */
-      [  
-        x1' = V1 * f1 - V2 * P2 * f2, 
-        x2' = V2 * P2 * f2, 
-        t' = 1 
-      ];
-
-      /* Ensure attack lasts at most τ time units */
-      ?(t ≤ τ);
     };
 
     /* Attack + Delayed Mitigation */
     HP a ::= {
       c := 0;  /* Reset mitigation clock */
       timedtankattacked;
-      ?(c ≤ τ);  /* Ensure the mitigation window is still open */
+      ?(c ≤ T);  /* Ensure the mitigation window is still open */
       delayedMitigation;
       tankattacked;
     };
-
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Safety property: Water levels always within bounds */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
   End.
 
   ProgramVariables
@@ -363,14 +268,14 @@ Theorem "NFM25/Delayed Actuator Attack Mitigation"
     Real V1;  /* Valve 1 state */
     Real V2;  /* Valve 2 state */
     Real P2;  /* Pump 2 state */
-    Real t;   /* Attack timer */
-    Real τ;   /* Maximum mitigation horizon */
+    Real f1, f2;  /* Flow rates */    
+    Real t;   /* Attack timer */    
     Real c;   /* Mitigation delay clock */
   End.
 
   Problem
-    /* Prove that if the attack occurs, mitigation within time τ prevents failure */
-    Atank -> [a] Stank;
+    /* Prove that if the attack occurs, mitigation within time T prevents failure */
+    Atank(x1,x2,f1,f2,t) -> [a;]Stank(x1,x2)
   End.
 End.
 
@@ -379,19 +284,6 @@ End.
 /* Case Study: Valve Attack */
 Theorem "NFM25/Valve Attack"
   Definitions
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Safety property: Water levels always within bounds */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
-
     /* Attack: Keeps valve closed even when pump is on */
     HP valveAttack ::= {
       ?(P2 = 1 ∧ x2 < H2);  /* Only occurs if pump is running & water level < max */
@@ -418,7 +310,7 @@ Theorem "NFM25/Valve Attack"
 
   Problem
     /* Prove that if the valve attack occurs, mitigation ensures system safety */
-    Atank -> [valveAttack; valveMitigation] Stank;
+    Atank(x1,x2,f1,f2,t) -> [valveAttack; valveMitigation;] Stank(x1,x2)
   End.
 End.
 
@@ -426,33 +318,23 @@ End.
 /* Case Study: Stealthy Sensor Attack */
 Theorem "NFM25/Stealthy Sensor Attack"
   Definitions
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Safety property: Water levels always within bounds */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
+    import kyx.math.abs;
 
     /* Attack: Manipulates sensor readings */
     HP stealthySensorAttack ::= {
-      x2_actual := x2;  /* Store actual water level */
+      x2actual := x2;  /* Store actual water level */
       x2 := *;  /* Attacker injects falsified sensor readings */
-      ?(|x2 - x2_actual| ≤ δ);  /* Ensure attack remains undetectable */
+      ?(abs(x2 - x2actual) ≤ D);  /* Ensure attack remains undetectable */
     };
 
     /* Attack Monitor: Detects deviations between actual and reported values */
-    Bool attackMonitor <-> (|x2 - x2_actual| > δ);
+    Bool attackMonitor(Real x2, Real x2actual) <-> (abs(x2 - x2actual) > D);
 
     /* Mitigation: Reset falsified sensor values */
     HP sensorMitigation ::= {
-      ?attackMonitor;  /* Detect attack */
-      x2 := x2_actual;  /* Restore correct sensor reading */
+      if (attackMonitor(x2, x2actual)) {  /* Detect attack */
+        x2 := x2actual;                   /* Restore correct sensor reading */
+      }
     };
 
   End.
@@ -460,18 +342,18 @@ Theorem "NFM25/Stealthy Sensor Attack"
   ProgramVariables
     Real x1;  /* Water level in Tank 1 */
     Real x2;  /* Water level in Tank 2 (reported) */
-    Real x2_actual;  /* True water level in Tank 2 */
+    Real x2actual;  /* True water level in Tank 2 */
     Real V1;  /* Valve 1 state */
     Real V2;  /* Valve 2 state */
     Real P2;  /* Pump 2 state */
     Real f1, f2;  /* Flow rates */
     Real t;  /* Timer */
-    Real δ;  /* Maximum allowable sensor deviation */
+    Real D;  /* Maximum allowable sensor deviation */
   End.
 
   Problem
     /* Prove that if a stealthy sensor attack occurs, mitigation restores system safety */
-    Atank -> [stealthySensorAttack; sensorMitigation] Stank;
+    Atank(x1,x2,f1,f2,t) -> [stealthySensorAttack; sensorMitigation;]Stank(x1,x2)
   End.
 End.
 
@@ -479,55 +361,43 @@ End.
 /* Case Study: Sensor Spike Attack */
 Theorem "NFM25/Sensor Spike Attack"
   Definitions
-    /* Initial safe state conditions */
-    Bool Atank <-> (
-      LL < L1 ∧ L1 ≤ x1 ≤ H1 ∧ H1 < HH  /* Tank 1 safe level */
-      ∧ LL < L2 ∧ L2 ≤ x2 ≤ H2 ∧ H2 < HH  /* Tank 2 safe level */
-      ∧ f1 ≥ 0 ∧ f2 ≥ 0  /* Valid flow rates */
-      ∧ t = 0  /* Initial time */
-    );
-
-    /* Safety property: Water levels always within bounds */
-    Bool Stank <-> (
-      LL ≤ x1 ≤ HH ∧ LL ≤ x2 ≤ HH
-    );
-
+    import kyx.math.abs;
+    
     /* Attack: Injects a sudden false spike in sensor readings */
     HP sensorSpikeAttack ::= {
-      x2_actual := x2;  /* Store actual water level */
+      x2actual := x2;  /* Store actual water level */
       x2 := *;  /* Attacker injects a false reading */
       ?(x2 > HH);  /* Ensure the attack causes emergency draining */
-      ?(|x2 - x2_actual| ≤ ε);  /* Ensure the attack remains within sensor error range */
+      ?(abs(x2 - x2actual) ≤ E);  /* Ensure the attack remains within sensor error range */
     };
 
     /* Attack Monitor: Detects rapid spikes in sensor data */
-    Bool attackMonitor <-> (|x2 - x2_actual| > ε);
+    Bool attackMonitor(Real x2, Real x2actual) <-> (abs(x2 - x2actual) > E);
 
     /* Mitigation: Prevent false emergency draining */
     HP sensorSpikeMitigation ::= {
-      ?attackMonitor;  /* Detect attack */
-      x2 := x2_actual;  /* Restore correct sensor reading */
-      ?(t ≤ τunderflow);  /* Ensure mitigation occurs before underflow */
+      ?attackMonitor(x2, x2actual);  /* Detect attack */
+      x2 := x2actual;  /* Restore correct sensor reading */
+      ?(t ≤ Tunderflow);  /* Ensure mitigation occurs before underflow */
     };
-
   End.
 
   ProgramVariables
     Real x1;  /* Water level in Tank 1 */
     Real x2;  /* Water level in Tank 2 (reported) */
-    Real x2_actual;  /* True water level in Tank 2 */
+    Real x2actual;  /* True water level in Tank 2 */
     Real V1;  /* Valve 1 state */
     Real V2;  /* Valve 2 state */
     Real P2;  /* Pump 2 state */
     Real f1, f2;  /* Flow rates */
     Real t;  /* Timer */
-    Real ε;  /* Maximum sensor fluctuation before detection */
-    Real τunderflow;  /* Time before emergency draining must stop */
+    Real E;  /* Maximum sensor fluctuation before detection */
+    Real Tunderflow;  /* Time before emergency draining must stop */
   End.
 
   Problem
     /* Prove that if a sensor spike attack occurs, mitigation ensures system safety */
-    Atank -> [sensorSpikeAttack; sensorSpikeMitigation] Stank;
+    Atank(x1,x2,f1,f2,t) -> [sensorSpikeAttack; sensorSpikeMitigation;]Stank(x1,x2)
   End.
 End.
 
