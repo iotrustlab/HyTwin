@@ -10,7 +10,22 @@ Research artifact for **[HyTwin: Hybrid Program Semantics for Digital Twin-Based
 
 **Experimental trace collection and validation:** the companion **[OpenPLC Mini Water Treatment Testbed](https://github.com/iotrustlab/miniwatertreatment/tree/main)** was used to **collect and validate the process traces for HyTwin's water-treatment evaluation**. Together, the repositories connect mathematical attack models and intervention deadlines to instrumented PLC experiments. [Explore the experimental infrastructure](docs/experimental-testbed.md).
 
+## Watch the physical safety impact
+
+![Animated comparison: the same pump-and-valve attack leads to an unsafe tank level without intervention, a safe level with timely shutdown, and an unsafe level with delayed shutdown. Illustrative synthetic simulation.](assets/media/hytwin-impact.gif)
+
+**A compromised PLC command can become a physical safety hazard.** This animation follows the same actuator attack under three response strategies: no intervention, timely shutdown, and delayed shutdown. Timely action keeps the receiving tank inside its safety limit; late action stops the flow after the limit has already been exceeded. This is the practical motivation for HyTwin's mitigation horizon: knowing **how much time remains to protect the physical process**.
+
+[Watch or download the 30-second MP4](assets/media/hytwin-impact.mp4) · [View the still image](assets/media/hytwin-impact-poster.png) · [Animation source and reproduction](docs/animation.md)
+
+The animation uses the repository's synthetic model traces and schematic tank geometry. It illustrates overflow risk, without modeling actual spill volume or presenting original testbed footage. The [companion OpenPLC testbed](https://github.com/iotrustlab/miniwatertreatment/tree/main) provides the experimental trace collection and validation infrastructure.
+
+<details>
+<summary>View the static trace overview</summary>
+
 ![Synthetic reconstruction of timely and delayed interventions](results/demo/overview.svg)
+
+</details>
 
 ## Evidence you can inspect
 
@@ -98,10 +113,13 @@ The paper's first-valve running example and its transfer-pump hardware experimen
 | [`hytwin/`](hytwin/) | New Python model, scenario runner, and report generation |
 | [`models/`](models/) | New dL models and replayable tactics |
 | [`results/demo/`](results/demo/) | Synthetic traces, summary, 81-point delay sweep, overview, hash manifest |
+| [`assets/media/`](assets/media/) | Illustrative GIF, MP4, still image, and media provenance manifest |
+| [`scripts/render_animation.py`](scripts/render_animation.py) | Rebuild the animation directly from the checked-in synthetic traces |
 | [`results/proofs/`](results/proofs/) | Checked proof evidence and verification metadata |
 | [`tests/`](tests/) | Physical invariants, timing boundaries, failure cases, and evidence integrity |
 | [`docs/paper-map.md`](docs/paper-map.md) | Exact mapping to paper definitions, examples, and figures |
 | [`docs/experimental-testbed.md`](docs/experimental-testbed.md) | Companion PLC testbed used for experimental trace collection and validation |
+| [`docs/animation.md`](docs/animation.md) | Animation narrative, numeric anchors, provenance, and optional rendering dependencies |
 | [`docs/showcase.md`](docs/showcase.md) | Portfolio framing, resume language, and interview walkthrough |
 | [`legacy/recovered/`](legacy/recovered/) | Original deleted files restored byte-for-byte with provenance |
 | [`Archive/securityformalization.kyx`](Archive/securityformalization.kyx) | Surviving original draft, unchanged |

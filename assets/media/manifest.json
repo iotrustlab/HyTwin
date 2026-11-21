@@ -1,0 +1,54 @@
+{
+  "artifact_type": "illustrative animation from checked-in synthetic traces",
+  "video_duration_s": 30,
+  "video_fps": 15,
+  "video_size": [
+    1200,
+    800
+  ],
+  "gif_fps": 10,
+  "gif_size": [
+    960,
+    640
+  ],
+  "simulation_interval_s": [
+    0,
+    20
+  ],
+  "intro_hold_s": 4,
+  "outro_hold_s": 6,
+  "audio": "none; on-screen captions",
+  "case_names": [
+    "transfer-unmitigated",
+    "transfer-mitigated",
+    "transfer-late"
+  ],
+  "interpolation": "piecewise linear physical levels; sampled actuator states",
+  "scope": "Schematic physical safety consequences; no measured spill volume, deployed guarantee, or detector latency claim",
+  "pillow_version": "12.0.0",
+  "imageio_ffmpeg_version": "0.6.0",
+  "encoder_version": "ffmpeg version 7.0.2-static https://johnvansickle.com/ffmpeg/  Copyright (c) 2000-2024 the FFmpeg developers",
+  "width": 1200,
+  "height": 800,
+  "mp4_frames_per_second": 15,
+  "duration_seconds": 30,
+  "sources_sha256": {
+    "results/demo/traces.csv": "2635572e6cfe06a328f564ef5177d943aefcac56049443dc4c512148f400f0b3",
+    "results/demo/summary.json": "495367eb51f7369f76e4147806ac7c24f59553fe54d195f3b9f3c7f1ee85d81c",
+    "scripts/render_animation.py": "00a39212fc0522a2473894e9c5e8b97d1ec575dbbcc21595411a24df5b6a1eb8"
+  },
+  "fonts_sha256": {
+    "DejaVuSans.ttf": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
+    "DejaVuSans-Bold.ttf": "5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895"
+  },
+  "files_sha256": {
+    "hytwin-impact.gif": "aad086f0d6f0e61a75b0f10e4a9ad3eba9698fc49eb957d7ef19894d7f915de7",
+    "hytwin-impact.mp4": "72e57783c27cf8cdf28faa903d382da3e308c84879c961407a8c686ef4880fd2",
+    "hytwin-impact-poster.png": "0696466cae6af713dc2694e7a901e6b012aff9f08564ba4f318353f1646284b2"
+  },
+  "files_bytes": {
+    "hytwin-impact.gif": 893024,
+    "hytwin-impact.mp4": 608020,
+    "hytwin-impact-poster.png": 73535
+  }
+}
