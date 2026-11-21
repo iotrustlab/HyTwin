@@ -1,0 +1,21 @@
+name: Artifact checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  executable-reconstruction:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: bash check_all.sh
+      - run: python -m hytwin demo --output results/local/ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-demo-python-${{ matrix.python }}
+          path: results/local/ci/

@@ -1,0 +1,44 @@
+KeYmaera X Prover 5.1.2
+Use option -help for usage and license information
+WARNING: Encountered 19 errors when trying to populate DerivedAxioms database. Unable to derive:
+timesDivInverse
+powNegOne
+powerLemma
+timesPowersBoth
+powerEven
+powerOdd
+divideNumber
+divideRat
+divideNeg
+normalizeCoeff0
+powerDivideEven
+powerDivideOdd
+ratFormAdd
+ratFormMinus
+ratFormDivide
+ratFormTimes
+ratFormNeg
+taylorModelPowerEven
+taylorModelPowerOdd
+
+Timed out while trying to derive lemmas. Continuing with restricted functionality!
+DETAILS: QE with Z3 gives SAT. Cannot reduce the following formula to True:
+\forall y \forall x 1/x*y=y/x
+
+Run with -debug for more details.
+Proving entries from 1 files
+Proving /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Direct actuator signature equivalence ...
+Done /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Direct actuator signature equivalence (proved)
+Proving /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Direct actuator mitigation with isolated transfer ...
+Done /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Direct actuator mitigation with isolated transfer (proved)
+Proving /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Pipe valve attack mitigation ...
+Done /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Pipe valve attack mitigation (proved)
+Proving /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Valve signature sound positive ...
+Done /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Valve signature sound positive (proved)
+Proving /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Stealthy sensor lower-band refinement ...
+Done /home/jainta-paul/HyTwin/models/attack_mitigation.kyx#HyTwin/Stealthy sensor lower-band refinement (proved)
+PROVED HyTwin/Direct actuator signature equivalence: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=12[ms],qe=0[ms],rcf=0,steps=14
+PROVED HyTwin/Direct actuator mitigation with isolated transfer: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=784[ms],qe=351[ms],rcf=0,steps=3412
+PROVED HyTwin/Pipe valve attack mitigation: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=86[ms],qe=19[ms],rcf=0,steps=345
+PROVED HyTwin/Valve signature sound positive: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=15[ms],qe=0[ms],rcf=0,steps=58
+PROVED HyTwin/Stealthy sensor lower-band refinement: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=18[ms],qe=13[ms],rcf=0,steps=57

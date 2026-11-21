@@ -1,0 +1,38 @@
+KeYmaera X Prover 5.1.2
+Use option -help for usage and license information
+WARNING: Encountered 19 errors when trying to populate DerivedAxioms database. Unable to derive:
+timesDivInverse
+powNegOne
+powerLemma
+timesPowersBoth
+powerEven
+powerOdd
+divideNumber
+divideRat
+divideNeg
+normalizeCoeff0
+powerDivideEven
+powerDivideOdd
+ratFormAdd
+ratFormMinus
+ratFormDivide
+ratFormTimes
+ratFormNeg
+taylorModelPowerEven
+taylorModelPowerOdd
+
+Timed out while trying to derive lemmas. Continuing with restricted functionality!
+DETAILS: QE with Z3 gives SAT. Cannot reduce the following formula to True:
+\forall y \forall x 1/x*y=y/x
+
+Run with -debug for more details.
+Parsing /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx...
+HyTwin/Fixed-flow horizon preserves safety
+0<=LL&LL<=x&x=x0&x0<=HH&q>0&tau=(HH-x0)/q->[c:=0;{x'=q,c'=1&c<=tau}](LL<=x&x<=HH)
+Parsed file successfully
+HyTwin/Fixed-flow horizon is maximal
+x0<=HH&q>0&tau=(HH-x0)/q&later>tau->x0+q*later>HH
+Parsed file successfully
+HyTwin/On-time shutdown preserves the tank level
+0<=LL&LL<=x&x=x0&x0<=HH&q>0&tau=(HH-x0)/q->[u:=1;c:=0;{x'=u*q,c'=1&c<=tau}u:=0;{x'=u*q,c'=1}](LL<=x&x<=HH)
+Parsed file successfully

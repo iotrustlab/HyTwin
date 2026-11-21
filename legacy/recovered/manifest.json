@@ -1,0 +1,402 @@
+{
+  "recovery_date": "2026-11-21",
+  "method": "For every path absent at b9984ee but present in its reachable history, restore the byte content from the parent of the most recent deletion (including renames treated as delete/add). Current originals were not changed.",
+  "artifacts": [
+    {
+      "original_path": "TODO.txt",
+      "source_commit": "96c15bc86447180bc392e4ba9fb04ac6631f3ef7",
+      "git_blob_sha1": "e799eb216d96be899a95ea695763be29b3e46610",
+      "blob_sha256": "1e7e38d6d971feef73087b289cc1b5e51c62bb49fee6413b9db0402ce07e3adf",
+      "stored_path": "legacy/recovered/TODO.txt",
+      "size_bytes": 311,
+      "deleted_in_commit": "f37d9ead0fc148ab2c8e32fb6370d57733d2733d"
+    },
+    {
+      "original_path": "Water Treatment Process/fuzzing_summary_20241120_231121.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "00016ebcb4b8836698bb8a8a418a40d4ff6bacdb",
+      "blob_sha256": "22f3fbeb07dd0af21620ca4d95010817980db50c93b7ae512560892f2d5e1024",
+      "stored_path": "legacy/recovered/Water Treatment Process/fuzzing_summary_20241120_231121.txt",
+      "size_bytes": 7050,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/fuzzing_trace_20241120_231121.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "11c7a0c8694e273a873ff5456cba01d5764e9514",
+      "blob_sha256": "e1f11dac83f87e5b96c613bd59fbae3dc322c0d0c90d3bd2e112ff8baa00f199",
+      "stored_path": "legacy/recovered/Water Treatment Process/fuzzing_trace_20241120_231121.txt",
+      "size_bytes": 5936,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/overflow_fuzzer.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "c18f21b1bfb9c598e43512faeae5ff9c5ba53465",
+      "blob_sha256": "4f19de2ddb6904144c9446721cf4222bfc472614ccc638c63b5d47d446dd070e",
+      "stored_path": "legacy/recovered/Water Treatment Process/overflow_fuzzer.py",
+      "size_bytes": 6678,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/beremiz.xml",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "2cff9e6ebd9f117df3a3d4fa22ffedf60d6999f2",
+      "blob_sha256": "3a12f3118a30fe127cbe4792d42dd0a79ba6128cdb265c8513074473d138710e",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/beremiz.xml",
+      "size_bytes": 153,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/Config0.c",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "49251cb2eb699b6648f8d3ce7cc86bfe52f46068",
+      "blob_sha256": "bbf92db2d3f3963a9b1f0784bfc1b05c634b1eadb7e83da7fc61df6150f1e517",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/Config0.c",
+      "size_bytes": 616,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/Config0.h",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "7050753554d9a7d8173df0ed63d6e1541bafbd87",
+      "blob_sha256": "5ad1c9faea8a86d1f1c42685a9467932383848c7fb6353ed7b25b5c756e05570",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/Config0.h",
+      "size_bytes": 22,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/Config0.o",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "6e7d49eebe6064d3cfb6feb2e8855c5b544b7a39",
+      "blob_sha256": "55907ca30a643cf7e50bac75db13c58a458e43b038f98e4d2f1e7877ee25c68e",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/Config0.o",
+      "size_bytes": 1608,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/LOCATED_VARIABLES.h",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "blob_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/LOCATED_VARIABLES.h",
+      "size_bytes": 0,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/POUS.c",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "384f1ad26cf36ec71ddaafec7ad61a061216204e",
+      "blob_sha256": "e2078e3463df8ddab81eb366353670af5fb3821d66978ed60f158863e39abd7f",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/POUS.c",
+      "size_bytes": 4990,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/POUS.h",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "f0881608bcb8902ac5e79131e4eb9bce78423163",
+      "blob_sha256": "4735e047fdb087ff45abd34d8c717e612e5b478fc2e9495b4a56e6abc7da426b",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/POUS.h",
+      "size_bytes": 1556,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/Res0.c",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "52019e7414b4ab965eeff149f2a699c103b15192",
+      "blob_sha256": "6957955965aedb5f4c5fe433a1205528087e820658dd011169ea4c605d0ee87b",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/Res0.c",
+      "size_bytes": 665,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/Res0.o",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "fa1aa4b08c4ae44525ecc46c977e0a5614472b36",
+      "blob_sha256": "fb84358032f5cb8cf1c1406b647aff4ab95d06b864ad9376ea2ac58af2371ff8",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/Res0.o",
+      "size_bytes": 4936,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/VARIABLES.csv",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "1787e1b1199aba1ba213f81a863b6766a291d59e",
+      "blob_sha256": "c479094e437ad9a910a341712be9a8c894db27f9f43ac9ce58c7d043efbe38dc",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/VARIABLES.csv",
+      "size_bytes": 4973,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/beremiz.h",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "77519360255a6ee830ae9450b1ab9ddfeb2aa440",
+      "blob_sha256": "3d00adb17cfc8f68c0bc52770fb33de94f69f370384b5b66da543c5c5594897f",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/beremiz.h",
+      "size_bytes": 877,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/generated_plc.st",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "a374c007e1fe62ffec08870757661194a5ca1044",
+      "blob_sha256": "ff8df5613132312d8442eee5a74701f5720a47af55cfeec20ee9fe25de2f8e07",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/generated_plc.st",
+      "size_bytes": 2840,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/lastbuildPLC.md5",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "ad6ca5b10dfedfc8d468df3121d272e93e673b5b",
+      "blob_sha256": "1d1d4adee363caea610c6b05eb8154a5b535cddc8856b9516f8776340e7dcc67",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/lastbuildPLC.md5",
+      "size_bytes": 32,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/plc.st",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "5daabc4ed52587f34aa377bd3bf902d106cdf922",
+      "blob_sha256": "ef7db882b15038a368bc54944a2234029a566f7a20d45a4d2185d18023a09929",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/plc.st",
+      "size_bytes": 3121,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/plc2sim.so",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "992dd517bbf31c3a95d155fe7cef09c3f6ad61fa",
+      "blob_sha256": "6660b085d384b83a792700ba2f44c225738078cd4b2465651de3303a11b4942b",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/plc2sim.so",
+      "size_bytes": 47176,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/plc_debugger.c",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "5b0304347ebc0c929516ce811b938224f765bfdd",
+      "blob_sha256": "9df44b067d53c8cb3e6c3adcc9951f1aae2b0748e924b8400287e90af784032e",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/plc_debugger.c",
+      "size_bytes": 21440,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/plc_debugger.o",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "bb9d68703b75da56f0e5cb59b2d8f7d4013e464f",
+      "blob_sha256": "3a6b5f819d082ddace164091cf96cec54c035853e38ec19ea9f4cebac852bb6d",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/plc_debugger.o",
+      "size_bytes": 21840,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/plc_main.c",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "d25643565267ac1a569b058d79fb2e24d7f0dc22",
+      "blob_sha256": "8bf9e5a2a675081d4e2234488419c73e02ff852f317801505af97f6f5861d2d9",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/plc_main.c",
+      "size_bytes": 30653,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/build/plc_main.o",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "8da6e8361cc6df583e4ac27a2f71d5cb157fe8a3",
+      "blob_sha256": "90c57b7bbeb98e4df91e556c0837376fe21fbbbe6da59cf51b2eb94753816311",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/build/plc_main.o",
+      "size_bytes": 23704,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/generated_plc2sim.st",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "d4fdaf87dd1ad01a2d078ea3908232a76f0e2953",
+      "blob_sha256": "7c57e7e160ef01fd15f42b5860e8a854f005e536494cb6d8d30c0433d1dc9bef",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/generated_plc2sim.st",
+      "size_bytes": 12333,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plc2Sim/plc2sim/plc.xml",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "0eb097cc58e4dc084009563eb665adbf0b802b63",
+      "blob_sha256": "2af1743f5840499f4485486b319f94a0e67b306712e2f04869432a166c1f4171",
+      "stored_path": "legacy/recovered/Water Treatment Process/plc2Sim/plc2sim/plc.xml",
+      "size_bytes": 7233,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/plcexpsimulator.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "ac6be34be7b8576063af189157a1d274fb4fb304",
+      "blob_sha256": "444c9c1d250d4686c45e0e8a7ddb9401bdddf6c6363a6f2cb2e435724f2682b3",
+      "stored_path": "legacy/recovered/Water Treatment Process/plcexpsimulator.py",
+      "size_bytes": 4515,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/samplemonitor.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "340c8ffb6c01ddb78244ac5f90dedc81554d81cb",
+      "blob_sha256": "88ec55fa5896467da50e1fb021ca3953f61a74dcef7b3770e57c8ae5d88d3e69",
+      "stored_path": "legacy/recovered/Water Treatment Process/samplemonitor.py",
+      "size_bytes": 1617,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/tanksim.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "0359bb55248b2833f846ee2b5eb79c16d16a7a49",
+      "blob_sha256": "769a0dbf24532d8bc3834678fb7b34c816787b6004838adfac818633f623e46b",
+      "stored_path": "legacy/recovered/Water Treatment Process/tanksim.py",
+      "size_bytes": 5415,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "Water Treatment Process/violations_20241120_231121.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "d2e9456c6dba2618cab7a7be97fc70706726919a",
+      "blob_sha256": "161ac51c1d5720b0ca2723c93ce1982c588ad90376f72e6c1472a4f2634386bf",
+      "stored_path": "legacy/recovered/Water Treatment Process/violations_20241120_231121.txt",
+      "size_bytes": 5474,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "actuator_attack.st",
+      "source_commit": "de520bf8b0e8a5bc7d48e753121b03b2caaf9fd3",
+      "git_blob_sha1": "4946b109d51ecd46d87ed8043d1e18e56b482d2f",
+      "blob_sha256": "3e26904cdf5e5d40914f934290f7b8525bc3cd7ebee7ad5328e3682960c00eac",
+      "stored_path": "legacy/recovered/actuator_attack.st",
+      "size_bytes": 338,
+      "deleted_in_commit": "1629550385310345b582a250445e53d79d057c49"
+    },
+    {
+      "original_path": "actuator_attack.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "749cc4751ec2c563ce0ad64639d32a56ff26f9e9",
+      "blob_sha256": "d12034e49a6989fede2003858998b1145efeb4da01e85f79c4fc5b7f5933550e",
+      "stored_path": "legacy/recovered/actuator_attack.txt",
+      "size_bytes": 3878,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "actuator_only_attack.txt",
+      "source_commit": "4ef132f178b25fa60229bac73075859dd143e3df",
+      "git_blob_sha1": "749cc4751ec2c563ce0ad64639d32a56ff26f9e9",
+      "blob_sha256": "d12034e49a6989fede2003858998b1145efeb4da01e85f79c4fc5b7f5933550e",
+      "stored_path": "legacy/recovered/actuator_only_attack.txt",
+      "size_bytes": 3878,
+      "deleted_in_commit": "5cde24a9614f220e61fb55c94855750ef786000a"
+    },
+    {
+      "original_path": "actuator_only_attack_with_dt.txt",
+      "source_commit": "5cde24a9614f220e61fb55c94855750ef786000a",
+      "git_blob_sha1": "749cc4751ec2c563ce0ad64639d32a56ff26f9e9",
+      "blob_sha256": "d12034e49a6989fede2003858998b1145efeb4da01e85f79c4fc5b7f5933550e",
+      "stored_path": "legacy/recovered/actuator_only_attack_with_dt.txt",
+      "size_bytes": 3878,
+      "deleted_in_commit": "f6d4f0dc57c4ac8ac235701940b996d747225d68"
+    },
+    {
+      "original_path": "plc_actuator_only.kyx",
+      "source_commit": "de520bf8b0e8a5bc7d48e753121b03b2caaf9fd3",
+      "git_blob_sha1": "c95b824154c70d17c76484a2dd7f4fc9717511a8",
+      "blob_sha256": "a126b477c6ed7c8a8d2128bec6915a59431919ba6c700388145f12e7bf7e0e7e",
+      "stored_path": "legacy/recovered/plc_actuator_only.kyx",
+      "size_bytes": 1777,
+      "deleted_in_commit": "1629550385310345b582a250445e53d79d057c49"
+    },
+    {
+      "original_path": "plc_sensor_only_attack.kyx",
+      "source_commit": "de520bf8b0e8a5bc7d48e753121b03b2caaf9fd3",
+      "git_blob_sha1": "14cbc001c40b4eac116498889e68094a08a7091f",
+      "blob_sha256": "e2fccc39b8fdc9fdf6d12deddb441a0a2fe70f588137cccef3fd9766b115c517",
+      "stored_path": "legacy/recovered/plc_sensor_only_attack.kyx",
+      "size_bytes": 1829,
+      "deleted_in_commit": "1629550385310345b582a250445e53d79d057c49"
+    },
+    {
+      "original_path": "plc_sensor_only_attack.txt",
+      "source_commit": "4ef132f178b25fa60229bac73075859dd143e3df",
+      "git_blob_sha1": "e97e0e977380c685d0d063d0f8531f90f1ef9c95",
+      "blob_sha256": "e4d82a3bd247c2f40929df5b9ae89a59846e2b02c65bac6d60bbc3e781e0bdbb",
+      "stored_path": "legacy/recovered/plc_sensor_only_attack.txt",
+      "size_bytes": 2011,
+      "deleted_in_commit": "5cde24a9614f220e61fb55c94855750ef786000a"
+    },
+    {
+      "original_path": "psy-taliro.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "cc1a650a8ddff48346205c27cc4bd4ebcc571862",
+      "blob_sha256": "39b148205aaeb7355b5ac26c38d6d52bd4dc9ad30e2e8eb9106b9a43bacedc79",
+      "stored_path": "legacy/recovered/psy-taliro.py",
+      "size_bytes": 5157,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "scadman_monitor/scadman_monitor_swat.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "83829b1ea23774f6c7bc50d969d3df35e0a97b81",
+      "blob_sha256": "8c1a4b59ea5db0f985f1e70055abb08fde5cc6511c4e5bb8282c36c1a2f04d22",
+      "stored_path": "legacy/recovered/scadman_monitor/scadman_monitor_swat.py",
+      "size_bytes": 7381,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "sensor_attack.st",
+      "source_commit": "de520bf8b0e8a5bc7d48e753121b03b2caaf9fd3",
+      "git_blob_sha1": "74a519cad1c58e9026473625b341ce70f2b2a753",
+      "blob_sha256": "0abd9c2deeafee8a5b64d68c2ed2177ad3222cc363b54d6d3b210b383dbc3b84",
+      "stored_path": "legacy/recovered/sensor_attack.st",
+      "size_bytes": 361,
+      "deleted_in_commit": "1629550385310345b582a250445e53d79d057c49"
+    },
+    {
+      "original_path": "sensor_attack.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "e3161f6447a85046aac06478e9636e45475989e5",
+      "blob_sha256": "3d037dd3fbae4774e6bdbb6b9f3d69d8a2275e7f383bf5deb6ff21e2cf28deba",
+      "stored_path": "legacy/recovered/sensor_attack.txt",
+      "size_bytes": 2754,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "sensor_only_attack_with_dt.txt",
+      "source_commit": "428a7dd4307b5d4a2bb9605096872994d0611c02",
+      "git_blob_sha1": "e97e0e977380c685d0d063d0f8531f90f1ef9c95",
+      "blob_sha256": "e4d82a3bd247c2f40929df5b9ae89a59846e2b02c65bac6d60bbc3e781e0bdbb",
+      "stored_path": "legacy/recovered/sensor_only_attack_with_dt.txt",
+      "size_bytes": 2011,
+      "deleted_in_commit": "16a5d2245168b6a9b8e591717887c001a10e2403"
+    },
+    {
+      "original_path": "stealthy_actuator_attack.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "bb0e8657abdf6102c9442cfb30b3ab807c0420db",
+      "blob_sha256": "dc75ef9c6be21cd2927a05697258952fca2bed0d0cb2be19183e65c71a7528fd",
+      "stored_path": "legacy/recovered/stealthy_actuator_attack.txt",
+      "size_bytes": 3092,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "stealthy_sensor_attack.txt",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "575638ff36830e5d407500f3d12827671c384835",
+      "blob_sha256": "624243ac157e461de5f359e98993db6788ff4d3f39f12f5e4b3287a9309920aa",
+      "stored_path": "legacy/recovered/stealthy_sensor_attack.txt",
+      "size_bytes": 1192,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    },
+    {
+      "original_path": "test.py",
+      "source_commit": "a92c0421f9238f08f1d27f8cd2d5b5741b223dfa",
+      "git_blob_sha1": "edb3ff3e7f6f9161f716a4c6b7069bf31a88a058",
+      "blob_sha256": "3321e9cc4b5b28bd99faaf1c393eb8346e62e317da9e7ef43a85b745e0452eca",
+      "stored_path": "legacy/recovered/test.py",
+      "size_bytes": 830,
+      "deleted_in_commit": "faeeb60dd5752b8f509bbb762d710f1adee342e6"
+    }
+  ]
+}

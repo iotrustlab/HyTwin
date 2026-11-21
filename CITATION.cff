@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "Please cite the HyTwin paper. This repository also contains a later, explicitly labeled reconstruction."
+title: "HyTwin: Formal Safety Analysis and Timed Security Interventions for Industrial Cyber-Physical Systems"
+type: software
+authors:
+  - family-names: Paul
+    given-names: Jainta
+  - family-names: Mitsch
+    given-names: Stefan
+  - family-names: Garcia
+    given-names: Luis
+repository-code: "https://github.com/iotrustlab/HyTwin"
+url: "https://github.com/iotrustlab/HyTwin"
+preferred-citation:
+  type: conference-paper
+  title: "HyTwin: Hybrid Program Semantics for Digital Twin-Based Security Interventions in Industrial Control Systems"
+  authors:
+    - family-names: Paul
+      given-names: Jainta
+    - family-names: Mitsch
+      given-names: Stefan
+    - family-names: Garcia
+      given-names: Luis
+  year: 2025
+  collection-title: "NASA Formal Methods"
+  collection-type: proceedings
+  publisher:
+    name: Springer
+  start: 294
+  end: 312
+  doi: "10.1007/978-3-031-93706-4_17"

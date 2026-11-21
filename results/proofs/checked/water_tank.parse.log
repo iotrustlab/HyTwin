@@ -1,0 +1,32 @@
+KeYmaera X Prover 5.1.2
+Use option -help for usage and license information
+WARNING: Encountered 19 errors when trying to populate DerivedAxioms database. Unable to derive:
+timesDivInverse
+powNegOne
+powerLemma
+timesPowersBoth
+powerEven
+powerOdd
+divideNumber
+divideRat
+divideNeg
+normalizeCoeff0
+powerDivideEven
+powerDivideOdd
+ratFormAdd
+ratFormMinus
+ratFormDivide
+ratFormTimes
+ratFormNeg
+taylorModelPowerEven
+taylorModelPowerOdd
+
+Timed out while trying to derive lemmas. Continuing with restricted functionality!
+DETAILS: QE with Z3 gives SAT. Cannot reduce the following formula to True:
+\forall y \forall x 1/x*y=y/x
+
+Run with -debug for more details.
+Parsing /home/jainta-paul/HyTwin/models/water_tank.kyx...
+HyTwin/Reconstructed nominal two-tank safety
+eps()>0&0<=LL()&0<=F1()&0<=F2()&LL() < L1()&L1()<=x1&x1<=H1()&H1() < HH()&LL() < L2()&L2()<=x2&x2<=H2()&H2() < HH()&v1=0&v2=0&p2=0->[{tank{|^@|};}*](LL()<=x1&x1<=HH()&LL()<=x2&x2<=HH())
+Parsed file successfully

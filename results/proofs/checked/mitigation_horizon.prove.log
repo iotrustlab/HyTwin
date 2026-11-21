@@ -1,0 +1,38 @@
+KeYmaera X Prover 5.1.2
+Use option -help for usage and license information
+WARNING: Encountered 19 errors when trying to populate DerivedAxioms database. Unable to derive:
+timesDivInverse
+powNegOne
+powerLemma
+timesPowersBoth
+powerEven
+powerOdd
+divideNumber
+divideRat
+divideNeg
+normalizeCoeff0
+powerDivideEven
+powerDivideOdd
+ratFormAdd
+ratFormMinus
+ratFormDivide
+ratFormTimes
+ratFormNeg
+taylorModelPowerEven
+taylorModelPowerOdd
+
+Timed out while trying to derive lemmas. Continuing with restricted functionality!
+DETAILS: QE with Z3 gives SAT. Cannot reduce the following formula to True:
+\forall y \forall x 1/x*y=y/x
+
+Run with -debug for more details.
+Proving entries from 1 files
+Proving /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx#HyTwin/Fixed-flow horizon preserves safety ...
+Done /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx#HyTwin/Fixed-flow horizon preserves safety (proved)
+Proving /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx#HyTwin/Fixed-flow horizon is maximal ...
+Done /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx#HyTwin/Fixed-flow horizon is maximal (proved)
+Proving /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx#HyTwin/On-time shutdown preserves the tank level ...
+Done /home/jainta-paul/HyTwin/models/mitigation_horizon.kyx#HyTwin/On-time shutdown preserves the tank level (proved)
+PROVED HyTwin/Fixed-flow horizon preserves safety: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=404[ms],qe=82[ms],rcf=0,steps=1706
+PROVED HyTwin/Fixed-flow horizon is maximal: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=17[ms],qe=16[ms],rcf=0,steps=108
+PROVED HyTwin/On-time shutdown preserves the tank level: tactic=Reconstructed proof,tacticsize=1,budget=60[s],duration=399[ms],qe=137[ms],rcf=0,steps=3273

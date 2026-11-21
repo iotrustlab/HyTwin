@@ -1,0 +1,32 @@
+KeYmaera X Prover 5.1.2
+Use option -help for usage and license information
+WARNING: Encountered 19 errors when trying to populate DerivedAxioms database. Unable to derive:
+timesDivInverse
+powNegOne
+powerLemma
+timesPowersBoth
+powerEven
+powerOdd
+divideNumber
+divideRat
+divideNeg
+normalizeCoeff0
+powerDivideEven
+powerDivideOdd
+ratFormAdd
+ratFormMinus
+ratFormDivide
+ratFormTimes
+ratFormNeg
+taylorModelPowerEven
+taylorModelPowerOdd
+
+Timed out while trying to derive lemmas. Continuing with restricted functionality!
+DETAILS: QE with Z3 gives SAT. Cannot reduce the following formula to True:
+\forall y \forall x 1/x*y=y/x
+
+Run with -debug for more details.
+Proving entries from 1 files
+Proving /home/jainta-paul/HyTwin/models/water_tank.kyx#HyTwin/Reconstructed nominal two-tank safety ...
+Done /home/jainta-paul/HyTwin/models/water_tank.kyx#HyTwin/Reconstructed nominal two-tank safety (proved)
+PROVED HyTwin/Reconstructed nominal two-tank safety: tactic=Reconstructed loop invariant proof,tacticsize=6,budget=60[s],duration=5356[ms],qe=1297[ms],rcf=0,steps=10199

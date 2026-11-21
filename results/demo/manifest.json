@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "artifact_type": "illustrative reconstruction",
+    "paper": "https://doi.org/10.1007/978-3-031-93706-4_17",
+    "data_origin": "synthetic; chosen parameters; not recorded miniSWaT measurements",
+    "integrator": "exact affine evolution per fixed scan; held constant flows",
+    "physical_domain": "stop at an empty-tank boundary if further evolution would make a level negative",
+    "units": "illustrative level units and seconds; rates are level units/second",
+    "monitor": "hand-transcribed command compatibility predicates; not ModelPlex-generated",
+    "detection": "attack-window-gated signature observation; no IDS performance claim",
+    "mitigation": "trusted all-actuator freeze, latched every subsequent scan",
+    "transfer_inflow": "demo keeps inflow open when permitted by a one-scan upper margin",
+    "safety_interval": "closed; boundary contact is safe, a subsequent exceedance violates",
+    "numerics": "Python float; safety comparisons use absolute tolerance 1e-10; residual alarm uses strict float comparison",
+    "initialization": "nominal starts in paper A_tank; transfer scenarios start from a safe operating mode with v1 open",
+    "violation_time": "infimum of unsafe times, analytically computed within affine segments",
+    "proof_scope": "simulation is not a dL proof or a reproduction of the physical experiment"
+  },
+  "files": {
+    "delay-sweep.csv": "892c367f71a7543835e93b668a651b71adb8c0169c8a7ba8a587a3a197648ea9",
+    "overview.svg": "1de7e86e3618ed6d9652f6abbe1c22c85ddb66704554b8e0d5db376670a04a27",
+    "summary.json": "495367eb51f7369f76e4147806ac7c24f59553fe54d195f3b9f3c7f1ee85d81c",
+    "traces.csv": "2635572e6cfe06a328f564ef5177d943aefcac56049443dc4c512148f400f0b3"
+  }
+}

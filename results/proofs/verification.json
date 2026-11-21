@@ -1,0 +1,93 @@
+{
+  "artifact_status": "new reconstructed proofs; not recovered original experiment artifacts",
+  "verification_date": "2026-11-21",
+  "prover": {
+    "name": "KeYmaera X",
+    "version": "5.1.2",
+    "url": "https://github.com/LS-Lab/KeYmaeraX-release/releases/download/5.1.2/keymaerax.jar",
+    "sha256": "6e422fa3919c5e2d134558416bfc8a6d5c2e62d29e39305df610f38d18b8cd44",
+    "arithmetic_backend": "bundled Z3"
+  },
+  "java": "OpenJDK 21.0.13.1",
+  "parsed_archive_entries": 9,
+  "proved_archive_entries": 9,
+  "nominal_loop_status": "proved with reconstructed loop invariant and tactic",
+  "command": "KEYMAERAX_JAR=/absolute/path/keymaerax-5.1.2.jar PROOF_OUT=results/proofs/checked scripts/check_models.sh --prove",
+  "model_sha256": {
+    "models/attack_mitigation.kyx": "31808a1757743fcecd6a0ae897006c9c109af7638ac5def308c429e6c9ea5395",
+    "models/mitigation_horizon.kyx": "27b9b23ba2fc936daf85c3a7d45d64342c6582564cb8f75d60af0d340b7d9818",
+    "models/water_tank.kyx": "b2442b56fd09f39ca339d76148c27c7f017f86c8b5eb335728131d95c233a8a9"
+  },
+  "logs": "checked/*.log",
+  "limitations": [
+    "Proofs apply only to each written model and its explicit assumptions.",
+    "Fixed-flow horizon obligations specialize the paper model.",
+    "No original miniSWaT trace or full shield-theorem replay is claimed.",
+    "Optional derived arithmetic lemma initialization warnings are retained in raw logs."
+  ],
+  "proof_results": [
+    {
+      "archive_entry": "HyTwin/Direct actuator signature equivalence",
+      "status": "proved",
+      "log": "results/proofs/checked/attack_mitigation.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Direct actuator mitigation with isolated transfer",
+      "status": "proved",
+      "log": "results/proofs/checked/attack_mitigation.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Pipe valve attack mitigation",
+      "status": "proved",
+      "log": "results/proofs/checked/attack_mitigation.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Valve signature sound positive",
+      "status": "proved",
+      "log": "results/proofs/checked/attack_mitigation.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Stealthy sensor lower-band refinement",
+      "status": "proved",
+      "log": "results/proofs/checked/attack_mitigation.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Fixed-flow horizon preserves safety",
+      "status": "proved",
+      "log": "results/proofs/checked/mitigation_horizon.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Fixed-flow horizon is maximal",
+      "status": "proved",
+      "log": "results/proofs/checked/mitigation_horizon.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/On-time shutdown preserves the tank level",
+      "status": "proved",
+      "log": "results/proofs/checked/mitigation_horizon.prove.log"
+    },
+    {
+      "archive_entry": "HyTwin/Reconstructed nominal two-tank safety",
+      "status": "proved",
+      "log": "results/proofs/checked/water_tank.prove.log"
+    }
+  ],
+  "evidence_sha256": {
+    "results/proofs/checked/attack_mitigation-attack_mitigation.kyx-HyTwin/Direct%2Bactuator%2Bmitigation%2Bwith%2Bisolated%2Btransfer.kyp": "d7946d75eedf491e80684d562a2d5c1cd09f5039a51e9da64ab8e20c5f52b970",
+    "results/proofs/checked/attack_mitigation-attack_mitigation.kyx-HyTwin/Direct%2Bactuator%2Bsignature%2Bequivalence.kyp": "17146ee7292df3a4c64b78f66d66ba8b2d0aa3ee65897fd4404780b20609ceea",
+    "results/proofs/checked/attack_mitigation-attack_mitigation.kyx-HyTwin/Pipe%2Bvalve%2Battack%2Bmitigation.kyp": "21bcdb7d779590a5e315bebb9a09150a3d916e835b248f164090b34b1bc719ec",
+    "results/proofs/checked/attack_mitigation-attack_mitigation.kyx-HyTwin/Stealthy%2Bsensor%2Blower-band%2Brefinement.kyp": "8ae2b1fd7e5c3946302c5ade45506e5f8fe7e3ec32362a34fd843b4da767d24f",
+    "results/proofs/checked/attack_mitigation-attack_mitigation.kyx-HyTwin/Valve%2Bsignature%2Bsound%2Bpositive.kyp": "2e139a232d423cc7222355c33b67a64e9a660ca3cf92aaa77e3992fc6d48d553",
+    "results/proofs/checked/attack_mitigation.parse.log": "1fefb39d07003eae91e6ef208c4d6b90babf4c45d2fb4997965c6c8fd6fc6c36",
+    "results/proofs/checked/attack_mitigation.prove.log": "ad12e78d298c66d70f15e3816f8dc0c44fee355f2f68f3c3a455b4963244c880",
+    "results/proofs/checked/mitigation_horizon-mitigation_horizon.kyx-HyTwin/Fixed-flow%2Bhorizon%2Bis%2Bmaximal.kyp": "f0f17a3a2fbfeb927eb0f5e8014265d22eb8cbbae101703e7725e20deca2026b",
+    "results/proofs/checked/mitigation_horizon-mitigation_horizon.kyx-HyTwin/Fixed-flow%2Bhorizon%2Bpreserves%2Bsafety.kyp": "e64cbf2e710c47cbd07dc3e2ebc859f89f42a6640da1a6eee1d7820511044a16",
+    "results/proofs/checked/mitigation_horizon-mitigation_horizon.kyx-HyTwin/On-time%2Bshutdown%2Bpreserves%2Bthe%2Btank%2Blevel.kyp": "e65b2439c278840585498353ff131bcfcdbf02b518680e336d0da7c8da959efc",
+    "results/proofs/checked/mitigation_horizon.parse.log": "5cfb077e11cc53ff72317de90f51d7cd0f069522492b40c96e11c54dd83eca25",
+    "results/proofs/checked/mitigation_horizon.prove.log": "c8fd42170929efbbbb74047ab86242baf7791319275525be8040934d1c83b4b8",
+    "results/proofs/checked/water_tank.kyp": "d1be4f3712721c459ab16ee9ae8ff39ffcb7e8f72c7086d5303020207cd2f672",
+    "results/proofs/checked/water_tank.parse.log": "20bde5dba9b8abb5732572ec96a7c8e8839f93c514098dddc8ca2b2033d633e6",
+    "results/proofs/checked/water_tank.prove.log": "7faabf916ad312579bf43ed0a2900c3271beca14a6159a9933d27cb9434e325f"
+  },
+  "evidence_note": "Exact byte hashes cover all nine generated .kyp lemmas and six raw parse/prove logs in checked/. The logs retain original local source paths; they contain no credentials."
+}

@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "artifact_type": "illustrative reconstruction",
+    "paper": "https://doi.org/10.1007/978-3-031-93706-4_17",
+    "data_origin": "synthetic; chosen parameters; not recorded miniSWaT measurements",
+    "integrator": "exact affine evolution per fixed scan; held constant flows",
+    "physical_domain": "stop at an empty-tank boundary if further evolution would make a level negative",
+    "units": "illustrative level units and seconds; rates are level units/second",
+    "monitor": "hand-transcribed command compatibility predicates; not ModelPlex-generated",
+    "detection": "attack-window-gated signature observation; no IDS performance claim",
+    "mitigation": "trusted all-actuator freeze, latched every subsequent scan",
+    "transfer_inflow": "demo keeps inflow open when permitted by a one-scan upper margin",
+    "safety_interval": "closed; boundary contact is safe, a subsequent exceedance violates",
+    "numerics": "Python float; safety comparisons use absolute tolerance 1e-10; residual alarm uses strict float comparison",
+    "initialization": "nominal starts in paper A_tank; transfer scenarios start from a safe operating mode with v1 open",
+    "violation_time": "infimum of unsafe times, analytically computed within affine segments",
+    "proof_scope": "simulation is not a dL proof or a reproduction of the physical experiment"
+  },
+  "parameters": {
+    "lower": 1.0,
+    "upper": 12.0,
+    "low1": 4.0,
+    "high1": 7.0,
+    "low2": 4.0,
+    "high2": 7.0,
+    "inflow": 0.5,
+    "transfer": 0.4,
+    "scan": 0.25
+  },
+  "scenarios": [
+    {
+      "name": "nominal",
+      "settings": {
+        "name": "nominal",
+        "attack": "none",
+        "attack_at": 2.0,
+        "response_delay": null,
+        "duration": 20.0,
+        "initial": {
+          "x1": 4.0,
+          "x2": 4.0,
+          "v1": 0,
+          "v2": 0,
+          "p2": 0
+        }
+      },
+      "paper_reference": "Example 1",
+      "attack_started_at_s": null,
+      "signature_observed_at_s": null,
+      "intervention_at_s": null,
+      "actual_response_delay_s": null,
+      "held_command_horizon_at_attack_s": null,
+      "held_command_horizon_status": "not-applicable",
+      "safe_entire_run": true,
+      "violation_boundary_time_s": null,
+      "completed_duration_s": 20.0,
+      "termination": "duration-complete",
+      "min_x1": 4.0,
+      "max_x1": 6.000000000000028,
+      "min_x2": 4.0,
+      "max_x2": 11.999999999999972,
+      "final_state": {
+        "x1": 6.000000000000028,
+        "x2": 11.999999999999972,
+        "v1": 1,
+        "v2": 1,
+        "p2": 1
+      }
+    },
+    {
+      "name": "direct-unmitigated",
+      "settings": {
+        "name": "direct-unmitigated",
+        "attack": "direct",
+        "attack_at": 2.0,
+        "response_delay": null,
+        "duration": 20.0,
+        "initial": {
+          "x1": 6.0,
+          "x2": 6.0,
+          "v1": 0,
+          "v2": 0,
+          "p2": 0
+        }
+      },
+      "paper_reference": "Examples 2-5",
+      "attack_started_at_s": 2.0,
+      "signature_observed_at_s": 2.0,
+      "intervention_at_s": null,
+      "actual_response_delay_s": null,
+      "held_command_horizon_at_attack_s": 12.0,
+      "held_command_horizon_status": "finite",
+      "safe_entire_run": false,
+      "violation_boundary_time_s": 14.0,
+      "completed_duration_s": 20.0,
+      "termination": "duration-complete",
+      "min_x1": 6.0,
+      "max_x1": 15.0,
+      "min_x2": 6.0,
+      "max_x2": 6.0,
+      "final_state": {
+        "x1": 15.0,
+        "x2": 6.0,
+        "v1": 1,
+        "v2": 0,
+        "p2": 0
+      }
+    },
+    {
+      "name": "direct-mitigated",
+      "settings": {
+        "name": "direct-mitigated",
+        "attack": "direct",
+        "attack_at": 2.0,
+        "response_delay": 2.0,
+        "duration": 20.0,
+        "initial": {
+          "x1": 6.0,
+          "x2": 6.0,
+          "v1": 0,
+          "v2": 0,
+          "p2": 0
+        }
+      },
+      "paper_reference": "Examples 2-5",
+      "attack_started_at_s": 2.0,
+      "signature_observed_at_s": 2.0,
+      "intervention_at_s": 4.0,
+      "actual_response_delay_s": 2.0,
+      "held_command_horizon_at_attack_s": 12.0,
+      "held_command_horizon_status": "finite",
+      "safe_entire_run": true,
+      "violation_boundary_time_s": null,
+      "completed_duration_s": 20.0,
+      "termination": "duration-complete",
+      "min_x1": 6.0,
+      "max_x1": 7.0,
+      "min_x2": 6.0,
+      "max_x2": 6.0,
+      "final_state": {
+        "x1": 7.0,
+        "x2": 6.0,
+        "v1": 0,
+        "v2": 0,
+        "p2": 0
+      }
+    },
+    {
+      "name": "transfer-unmitigated",
+      "settings": {
+        "name": "transfer-unmitigated",
+        "attack": "transfer",
+        "attack_at": 2.0,
+        "response_delay": null,
+        "duration": 20.0,
+        "initial": {
+          "x1": 7.0,
+          "x2": 6.0,
+          "v1": 1,
+          "v2": 0,
+          "p2": 0
+        }
+      },
+      "paper_reference": "Section 5, Figures 2-3 (qualitative only)",
+      "attack_started_at_s": 2.0,
+      "signature_observed_at_s": 2.0,
+      "intervention_at_s": null,
+      "actual_response_delay_s": null,
+      "held_command_horizon_at_attack_s": 15.0,
+      "held_command_horizon_status": "finite",
+      "safe_entire_run": false,
+      "violation_boundary_time_s": 17.000000000000053,
+      "completed_duration_s": 20.0,
+      "termination": "duration-complete",
+      "min_x1": 7.0,
+      "max_x1": 9.800000000000026,
+      "min_x2": 6.0,
+      "max_x2": 13.199999999999974,
+      "final_state": {
+        "x1": 9.800000000000026,
+        "x2": 13.199999999999974,
+        "v1": 1,
+        "v2": 1,
+        "p2": 1
+      }
+    },
+    {
+      "name": "transfer-mitigated",
+      "settings": {
+        "name": "transfer-mitigated",
+        "attack": "transfer",
+        "attack_at": 2.0,
+        "response_delay": 2.0,
+        "duration": 20.0,
+        "initial": {
+          "x1": 7.0,
+          "x2": 6.0,
+          "v1": 1,
+          "v2": 0,
+          "p2": 0
+        }
+      },
+      "paper_reference": "Section 5, Figures 2-3 (qualitative only)",
+      "attack_started_at_s": 2.0,
+      "signature_observed_at_s": 2.0,
+      "intervention_at_s": 4.0,
+      "actual_response_delay_s": 2.0,
+      "held_command_horizon_at_attack_s": 15.0,
+      "held_command_horizon_status": "finite",
+      "safe_entire_run": true,
+      "violation_boundary_time_s": null,
+      "completed_duration_s": 20.0,
+      "termination": "duration-complete",
+      "min_x1": 7.0,
+      "max_x1": 8.200000000000003,
+      "min_x2": 6.0,
+      "max_x2": 6.799999999999997,
+      "final_state": {
+        "x1": 8.200000000000003,
+        "x2": 6.799999999999997,
+        "v1": 0,
+        "v2": 0,
+        "p2": 0
+      }
+    },
+    {
+      "name": "transfer-late",
+      "settings": {
+        "name": "transfer-late",
+        "attack": "transfer",
+        "attack_at": 2.0,
+        "response_delay": 16.0,
+        "duration": 20.0,
+        "initial": {
+          "x1": 7.0,
+          "x2": 6.0,
+          "v1": 1,
+          "v2": 0,
+          "p2": 0
+        }
+      },
+      "paper_reference": "Section 5, Figures 2-3 (qualitative only)",
+      "attack_started_at_s": 2.0,
+      "signature_observed_at_s": 2.0,
+      "intervention_at_s": 18.0,
+      "actual_response_delay_s": 16.0,
+      "held_command_horizon_at_attack_s": 15.0,
+      "held_command_horizon_status": "finite",
+      "safe_entire_run": false,
+      "violation_boundary_time_s": 17.000000000000053,
+      "completed_duration_s": 20.0,
+      "termination": "duration-complete",
+      "min_x1": 7.0,
+      "max_x1": 9.600000000000023,
+      "min_x2": 6.0,
+      "max_x2": 12.399999999999977,
+      "final_state": {
+        "x1": 9.600000000000023,
+        "x2": 12.399999999999977,
+        "v1": 0,
+        "v2": 0,
+        "p2": 0
+      }
+    }
+  ]
+}

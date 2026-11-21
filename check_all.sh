@@ -1,43 +1,11 @@
-#!/bin/bash
-
-echo "
-*******************************************************************************
-KeYmaera X artifact checking.
-*******************************************************************************
-"
-
-set -e
-
-while getopts "u:" flag; do
-    case $flag in
-        u) user=${OPTARG};;
-    esac
-done
-
-if [ -z "$user" ]
-then
-  user="$(whoami)"
-  if [ -z "$user" ]
-  then
-    echo "Failed to detect \$user for licenses. Provide username with -u."
-    exit 1
-  fi
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")"
+python3 -m unittest discover -s tests -v
+bash -n setup.sh check_all.sh scripts/check_models.sh
+if [[ -n "${KEYMAERAX_JAR:-}" ]]; then
+  bash scripts/check_models.sh --prove
+else
+  printf '\nPython checks passed. Prover replay skipped: KEYMAERAX_JAR is unset.\n'
+  printf 'See docs/formal-models.md for pinned KeYmaera X replay and scope.\n'
 fi
-
-docker start kyx
-
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove IV_I_conservative.kyx'
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove V_I_slopecurve.kyx'
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove V_II_airbrakes.kyx'
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove V_II_airbrakes_expanded.kyx'
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove V_III_taylor.kyx'
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove VI_I_airbrakes_freight.kyx'
-docker exec kyx bash -c 'PATH=$PATH:$(<wepath.txt); java -da -jar keymaerax.jar -launch -prove VI_I_taylor_freight.kyx'
-
-echo "
-*******************************************************************************
-KeYmaera X all artifacts checked.
-*******************************************************************************
-"
-
-docker stop kyx

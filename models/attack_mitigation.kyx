@@ -1,0 +1,92 @@
+/* Reconstructed, not recovered original artifacts.
+   Every obligation states its own assumptions. See docs/formal-models.md. */
+
+ArchiveEntry "HyTwin/Direct actuator signature equivalence"
+ProgramVariables
+  Real v1;
+  Real vpost;
+End.
+Problem
+  (vpost = 1) <-> <v1 := 1;>(vpost = v1)
+End.
+Tactic "Reconstructed proof"
+  auto
+End.
+End.
+
+ArchiveEntry "HyTwin/Direct actuator mitigation with isolated transfer"
+ProgramVariables
+  Real x1;
+  Real x2;
+  Real v1;
+  Real v2;
+  Real p2;
+  Real f1;
+  Real f2;
+  Real t;
+  Real LL;
+  Real HH;
+  Real eps;
+End.
+Problem
+  0 <= LL & LL <= x1 & x1 <= HH & LL <= x2 & x2 <= HH &
+  eps >= 0 & f1 >= 0 & f2 >= 0 & v2 = 0
+  -> [v1 := 1;]<v1 := 0;>
+     [t := 0;
+      {x1' = v1*f1-v2*p2*f2, x2' = v2*p2*f2, t' = 1 & t <= eps}]
+     (LL <= x1 & x1 <= HH & LL <= x2 & x2 <= HH)
+End.
+Tactic "Reconstructed proof"
+  auto
+End.
+End.
+
+ArchiveEntry "HyTwin/Pipe valve attack mitigation"
+ProgramVariables
+  Real x2;
+  Real H2;
+  Real p2;
+  Real v2;
+End.
+Problem
+  [if (p2 = 1 & x2 < H2) { v2 := 0; } else { ?true; }]
+  <if (p2 = 1) { v2 := 1; } else { ?true; }>
+  (p2 = 1 -> v2 = 1)
+End.
+Tactic "Reconstructed proof"
+  auto
+End.
+End.
+
+ArchiveEntry "HyTwin/Valve signature sound positive"
+ProgramVariables
+  Real x2;
+  Real H2;
+  Real p2;
+  Real v2;
+  Real vpost;
+End.
+Problem
+  vpost = 0 & p2 = 1 & x2 < H2 ->
+  <if (p2 = 1 & x2 < H2) { v2 := 0; } else { ?true; }>(vpost = v2)
+End.
+Tactic "Reconstructed proof"
+  auto
+End.
+End.
+
+ArchiveEntry "HyTwin/Stealthy sensor lower-band refinement"
+ProgramVariables
+  Real xhat2;
+  Real xtwin2;
+  Real delta;
+End.
+Problem
+  delta >= 0 ->
+  [xhat2 := xtwin2-delta;]
+  (-delta <= xhat2-xtwin2 & xhat2-xtwin2 <= delta)
+End.
+Tactic "Reconstructed proof"
+  auto
+End.
+End.

@@ -1,0 +1,30 @@
+name: Formal proof replay (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconstructed-proofs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Parse models and replay nine reconstructed proofs
+        env:
+          PROOF_OUT: results/proofs/local/ci
+          PROOF_TIMEOUT: '60'
+        run: bash scripts/check_models.sh --download --prove
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reconstructed-proof-replay-${{ github.run_id }}
+          path: results/proofs/local/ci/
+          if-no-files-found: warn
+          retention-days: 14
